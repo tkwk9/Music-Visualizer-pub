@@ -1,11 +1,10 @@
 import MusicPlayer from './music_player';
+import Renderer from './renderer';
 
 $( () => {
 
   const audio = $("#audio-source");
   const musicPlayer = new MusicPlayer();
-  // const $mainDiv = $('#j-chess');
-
-  // const game = new jChess();
-  // const view = new jChessView($mainDiv, game, game.getBoard());
+  const renderer = new Renderer();
+  musicPlayer.setRenderer(renderer);
 });

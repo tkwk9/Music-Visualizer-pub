@@ -20,8 +20,13 @@ class MusicPlayer {
     this.heightMultiplier = 3;
 
     this.addListeners();
-    this.addBars();
+    // this.addBars();
 
+  }
+
+  setRenderer(renderer) {
+    this.renderer = renderer;
+    this.renderer.setupSoundBars(this.barCount);
   }
 
   addBars() { // This is Test Function, this will move somewhere else
@@ -35,11 +40,7 @@ class MusicPlayer {
   }
 
   letThereBe() {
-    this.analyser.getFloatFrequencyData(this.freqArray);
-    this.processFreqArray().forEach( (height, ind) => {
-        $(`.testDivs.${ind}`).height(height);
-      }
-    );
+    this.renderer.drawData(this.processFreqArray());
     this.timeoutId = setTimeout(this.letThereBe.bind(this), 16);
   }
 
@@ -53,13 +54,13 @@ class MusicPlayer {
   }
 
   processFreqArray() {
-
+    this.analyser.getFloatFrequencyData(this.freqArray);
     let tempArray = [];
 
     for (let i = 0; i<this.barCount ; i++) {
       let val = this.freqArray[i] + 140;
-      let curveIntensity = (this.barCount - 1 - i) * (3/127) + 1;
-      val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity) * this.heightMultiplier;
+      let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
 
