@@ -1,0 +1,62 @@
+
+body {
+  display: flex;
+}
+
+.music-player {
+  width: 200px;
+  /* height: 500px; */
+  box-sizing: border-box;
+  padding: 20px;
+
+  background-color: red;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+}
+
+.play-button {
+  width: 64px;
+  height: 64px;
+}
+.play-button img{
+  width: 64px;
+  height: 64px;
+}
+
+.sample {
+  width: 150px;
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+  margin: 10px auto;
+}
+
+.drop-zone {
+  width: 150px;
+  height: 150px;
+  line-height: 150px;
+  text-align: center;
+  vertical-align: middle;
+  border: 1px solid black;
+}
+
+.test {
+  width: 1500px;
+  height: 300px;
+  background-color: red;
+  display: flex;
+  align-items:flex-end;
+}
+
+.testDivs {
+  width: 12px;
+  height: 200px;
+  margin: 1px;
+  background-color: blue;
+}
