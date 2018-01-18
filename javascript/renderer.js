@@ -8,7 +8,8 @@ class Renderer {
       antialias: true
     });
 
-    this.renderer.setClearColor(0x232c3a);
+    // this.renderer.setClearColor(0x232c3a);
+    this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
     const width = 1500;
@@ -24,16 +25,20 @@ class Renderer {
     this.mainScene = new THREE.Scene();
 
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
-    this.mainScene.add(this.ambLight);
+    // this.mainScene.add(this.ambLight);
 
     this.pointLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.pointLight.position.set(4,6,2);
-    this.mainScene.add(this.pointLight);
+    // this.mainScene.add(this.pointLight);
+
+    this.glowScene = new THREE.Scene();
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.5);
+
   }
 
   setupSoundBars(barCount) {
     this.soundBarsContainer = new SoundBarsContainer();
-    this.soundBarsContainer.createSoundBars(this.mainScene, barCount);
+    this.soundBarsContainer.createSoundBars(this.mainScene, this.mainCamera, barCount);
   }
 
   toRadian(degree) {

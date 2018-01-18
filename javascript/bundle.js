@@ -200,7 +200,8 @@ class Renderer {
       antialias: true
     });
 
-    this.renderer.setClearColor(0x232c3a);
+    // this.renderer.setClearColor(0x232c3a);
+    this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
     const width = 1500;
@@ -216,16 +217,20 @@ class Renderer {
     this.mainScene = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.Scene();
 
     this.ambLight = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.AmbientLight(0xffffff, 0.5);
-    this.mainScene.add(this.ambLight);
+    // this.mainScene.add(this.ambLight);
 
     this.pointLight = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.DirectionalLight(0xffffff, 0.5);
     this.pointLight.position.set(4,6,2);
-    this.mainScene.add(this.pointLight);
+    // this.mainScene.add(this.pointLight);
+
+    this.glowScene = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.Scene();
+    this.glowAmbLight = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.AmbientLight(0xffffff, 0.5);
+
   }
 
   setupSoundBars(barCount) {
     this.soundBarsContainer = new __WEBPACK_IMPORTED_MODULE_1__sound_bars_container__["a" /* default */]();
-    this.soundBarsContainer.createSoundBars(this.mainScene, barCount);
+    this.soundBarsContainer.createSoundBars(this.mainScene, this.mainCamera, barCount);
   }
 
   toRadian(degree) {
@@ -42030,15 +42035,18 @@ class SoundBarsContainer {
     this.soundBars = [];
   }
 
-  createSoundBars(scene, barCount) {
+  createSoundBars(scene, camera, barCount) {
     this.barCount = barCount;
     for(let i = 0; i < barCount; i++) {
       let settings = {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        color: 0xF3FFE2
+        color: 0x000000,
+        emissive: 0xffffff,
+        emissiveIntensity: 0.5
+        // F3FFE2
       };
-      this.soundBars.push(new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene));
+      this.soundBars.push(new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, camera, scene));
     }
   }
 
@@ -42061,15 +42069,47 @@ class SoundBarsContainer {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__three__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__three___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__three__);
 
+// import SubdivisionModifier from 'three-subdivision-modifier';
 
 class SoundBar {
-  constructor(settings, scene) {
+  constructor(settings, camera, scene) {
     this.settings = settings;
     this.geometry = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.BoxGeometry(...settings.scale);
-    this.material = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.MeshLambertMaterial({color: settings.color});
+    this.material = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.MeshLambertMaterial({
+      color: settings.color,
+      // emissive: settings.emissive,
+      // emissiveIntensity: settings.emissiveIntensity
+    });
     this.mesh = new __WEBPACK_IMPORTED_MODULE_0__three___default.a.Mesh(this.geometry, this.material);
     this.mesh.position.set(...settings.pos);
     scene.add(this.mesh);
+
+    // this.glowGeometry = this.geometry.clone();
+    // this.modifier = new SubdivisionModifier( 2 );
+    // this.modifier.modify(this.glowGeometry);
+    //
+    // this.glowMaterial = new THREE.ShaderMaterial(
+    //   {
+    //     uniforms: {
+    //       "c":   { type: "f", value: 0.2 },
+    // 			"p":   { type: "f", value: 0 },
+    // 			glowColor: { type: "c", value: new THREE.Color(0x80d863) },
+    // 			viewVector: { type: "v3", value: camera.position },
+    //       // intensity:
+    //     },
+    //     vertexShader:   document.getElementById( 'vertexShader'   ).textContent,
+	  //     fragmentShader: document.getElementById( 'fragmentShader' ).textContent,
+    //     side: THREE.FrontSide,
+    // 		blending: THREE.AdditiveBlending,
+    // 		transparent: true
+    //   }
+    // );
+    // this.glowMesh = new THREE.Mesh(this.glowGeometry, this.glowMaterial);
+    // this.glowMesh.position.set(this.mesh.position);
+    // this.glowMesh.scale.set(this.mesh.scale);
+    // this.glowMesh.scale.multiplyScalar(1.5);
+    // scene.add(this.glowMesh);
+
   }
 
   setHeight(height) {
