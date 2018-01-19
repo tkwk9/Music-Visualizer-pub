@@ -19,14 +19,14 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 4;
-    this.cameraPosition = [290, 20, 140];
-    this.cameraRotation = [0, degToRadian(45), 0];
+    this.bluriness = 2.5;
+    this.cameraPosition = [150, 30, 80];
+    // this.cameraRotation = [degToRadian(-15), degToRadian(55), degToRadian(15)];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1500;
+    this.width = 1000;
     this.height = 700;
     this.renderer.setSize(this.width, this.height);
 
@@ -36,25 +36,28 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.mainCamera.position.set(...this.cameraPosition);
-    this.mainCamera.rotation.set(...this.cameraRotation);
+    // this.mainCamera.rotation.set(...this.cameraRotation);
+
+    this.mainCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    this.glowCamera.rotation.set(...this.cameraRotation);
+    // this.glowCamera.rotation.set(...this.cameraRotation);
 
+    this.glowCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
     // this.mainCamera.rotation.set(this.toRadian(-10.29),this.toRadian(75.69),this.toRadian(9.78));
 
-    this.ambLight = new THREE.AmbientLight(0xffffff, 0.25);
+    this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.mainScene.add(this.ambLight);
 
-    this.pointLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.pointLight.position.set(4,6,2);
     this.mainScene.add(this.pointLight);
 
-    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.75);
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
@@ -117,6 +120,18 @@ class Renderer {
   }
 
   render () {
+    let x = this.mainCamera.position.x;
+    let z = this.mainCamera.position.z;
+    let delta = 0.001;
+
+    this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.mainCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+
+    this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.glowCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+
     this.mainComposer.render();
     this.glowComposer.render();
   }

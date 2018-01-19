@@ -16,7 +16,7 @@ class MusicPlayer {
     this.audioSrc.connect(this.analyser);
     this.audioSrc.connect(this.ctx.destination);
 
-    this.barCount = 32;
+    this.barCount = 64;
     this.heightMultiplier = 3;
 
     this.addListeners();
@@ -59,7 +59,8 @@ class MusicPlayer {
 
     for (let i = 0; i<this.barCount ; i++) {
       let val = this.freqArray[i] + 140;
-      let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      // let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      let curveIntensity = 2;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }

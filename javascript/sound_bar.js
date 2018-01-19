@@ -32,12 +32,13 @@ class SoundBar {
   }
 
   setHeight(height) {
-    // let color = pickHex([255, 255, 255], [0, 0, 0], height/70);
-    // this.material.color.set(color);
-    this.mesh.position.y = height/2 + 1;
-    this.mesh.scale.y = height + 1;
-    this.glowMesh.position.y = height/2 + 1;
-    this.glowMesh.scale.y = height + 1;
+    let modHeight = Math.max(0, height);
+    let color = pickHex([209, 2, 171], [74, 50, 130], modHeight/15);
+    this.glowMaterial.color.set(color);
+    this.mesh.position.y = modHeight/2 + 0.1;
+    this.mesh.scale.y = modHeight + 0.1;
+    this.glowMesh.position.y = this.mesh.position.y;
+    this.glowMesh.scale.y = this.mesh.scale.y;
     // this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
     // this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
   }

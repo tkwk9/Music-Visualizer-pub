@@ -106,7 +106,7 @@ class MusicPlayer {
     this.audioSrc.connect(this.analyser);
     this.audioSrc.connect(this.ctx.destination);
 
-    this.barCount = 32;
+    this.barCount = 64;
     this.heightMultiplier = 3;
 
     this.addListeners();
@@ -149,7 +149,8 @@ class MusicPlayer {
 
     for (let i = 0; i<this.barCount ; i++) {
       let val = this.freqArray[i] + 140;
-      let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      // let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      let curveIntensity = 2;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
@@ -213,14 +214,14 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 4;
-    this.cameraPosition = [290, 20, 140];
-    this.cameraRotation = [0, Object(__WEBPACK_IMPORTED_MODULE_3__util__["a" /* degToRadian */])(45), 0];
+    this.bluriness = 2.5;
+    this.cameraPosition = [150, 30, 80];
+    // this.cameraRotation = [degToRadian(-15), degToRadian(55), degToRadian(15)];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1500;
+    this.width = 1000;
     this.height = 700;
     this.renderer.setSize(this.width, this.height);
 
@@ -230,25 +231,28 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.mainCamera.position.set(...this.cameraPosition);
-    this.mainCamera.rotation.set(...this.cameraRotation);
+    // this.mainCamera.rotation.set(...this.cameraRotation);
+
+    this.mainCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    this.glowCamera.rotation.set(...this.cameraRotation);
+    // this.glowCamera.rotation.set(...this.cameraRotation);
 
+    this.glowCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
     // this.mainCamera.rotation.set(this.toRadian(-10.29),this.toRadian(75.69),this.toRadian(9.78));
 
-    this.ambLight = new THREE.AmbientLight(0xffffff, 0.25);
+    this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.mainScene.add(this.ambLight);
 
-    this.pointLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.pointLight.position.set(4,6,2);
     this.mainScene.add(this.pointLight);
 
-    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.75);
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
@@ -311,6 +315,18 @@ class Renderer {
   }
 
   render () {
+    let x = this.mainCamera.position.x;
+    let z = this.mainCamera.position.z;
+    let delta = 0.001;
+
+    this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.mainCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+
+    this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.glowCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+
     this.mainComposer.render();
     this.glowComposer.render();
   }
@@ -339,27 +355,84 @@ class SoundBarsContainer {
   createSoundBars(scene, glowScene, barCount) {
     this.barCount = barCount;
     for(let i = 0; i < barCount; i++) {
-      let glowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHex */])([0, 255, 255], [255, 0, 0], i/(barCount - 1));
+      let glowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["a" /* pickHex */])([0, 255, 255], [255, 0, 0], i/(barCount - 1));
       // console.log(glowColor);
       let settings = {
-        pos: [i + (i * 0.75), 0, 0],
+        pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        color: 0x6c6d6d,
-        emissive: 0xffffff,
-        emissiveIntensity: 0,
-        glowColor: glowColor,
-        glowIntensity: 0.75,
+        color: 0x686768,
+        emissive: 0x25c4a7,
+        emissiveIntensity: 0.1,
+        glowColor: 0x009933,
+        glowIntensity: 1,
         // glowColor: 0x91ff56,
       };
-      this.soundBars.push(new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene));
+      let set = [];
+
+      set[6] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 1.5;
+      set[5] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -1.5;
+      set[7] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 3;
+      set[4] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -3;
+      set[8] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 4.5;
+      set[3] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -4.5;
+      set[9] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 6;
+      set[2] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -6;
+      set[10] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 7.5;
+      set[1] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -7.5;
+      set[11] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+      settings.pos[2] = 9;
+      set[0] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+      settings.pos[2] = -9;
+      set[12] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
+
+
+      this.soundBars.push(set);
     }
   }
 
   updateSoundBars(freqArray) {
     // console.log(Math.max(...freqArray) * 2);
     for (let i = 0; i < this.barCount; i++){
-      let val = freqArray[i]/3;
-      this.soundBars[i].setHeight(val * 2);
+      let val = freqArray[i]/2;
+      this.soundBars[i].forEach((bar, ind) => {
+        if (ind === 6){
+          bar.setHeight(val/2);
+        } else if (ind === 5 || ind === 7) {
+          bar.setHeight(val/3);
+          bar.setHeight(val/3);
+        } else if (ind === 4 || ind === 8) {
+          bar.setHeight(val/5.5);
+          bar.setHeight(val/5.5);
+        } else if (ind === 3 || ind === 9) {
+          bar.setHeight(val/8);
+          bar.setHeight(val/8);
+        } else if (ind === 2 || ind === 10) {
+          bar.setHeight(val/10);
+          bar.setHeight(val/10);
+        } else if (ind === 1 || ind === 11) {
+          bar.setHeight(val/12);
+          bar.setHeight(val/12);
+        } else if (ind === 0 || ind === 12) {
+          bar.setHeight(val/14);
+          bar.setHeight(val/14);
+        }
+      });
     }
   }
 }
@@ -409,12 +482,13 @@ class SoundBar {
   }
 
   setHeight(height) {
-    // let color = pickHex([255, 255, 255], [0, 0, 0], height/70);
-    // this.material.color.set(color);
-    this.mesh.position.y = height/2 + 1;
-    this.mesh.scale.y = height + 1;
-    this.glowMesh.position.y = height/2 + 1;
-    this.glowMesh.scale.y = height + 1;
+    let modHeight = Math.max(0, height);
+    let color = Object(__WEBPACK_IMPORTED_MODULE_1__util__["a" /* pickHex */])([209, 2, 171], [74, 50, 130], modHeight/15);
+    this.glowMaterial.color.set(color);
+    this.mesh.position.y = modHeight/2 + 0.1;
+    this.mesh.scale.y = modHeight + 0.1;
+    this.glowMesh.position.y = this.mesh.position.y;
+    this.glowMesh.scale.y = this.mesh.scale.y;
     // this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
     // this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
   }
@@ -53406,15 +53480,15 @@ const pickHex = (color1, color2, weight) => {
     let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
         Math.round(color1[1] * w1 + color2[1] * w2),
         Math.round(color1[2] * w1 + color2[2] * w2)];
-    return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    return `rgb(${Math.max(0,rgb[0])}, ${Math.max(0,rgb[1])}, ${Math.max(0,rgb[2])})`;
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = pickHex;
+/* harmony export (immutable) */ __webpack_exports__["a"] = pickHex;
 
 
 const degToRadian = (deg) => {
     return deg * Math.PI/180;
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = degToRadian;
+/* unused harmony export degToRadian */
 
 
 
