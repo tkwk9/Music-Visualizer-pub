@@ -73,9 +73,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__renderer__ = __webpack_require__(2);
 
 
+// import Dropzone from "./external_packages/dropzone";
 
 $( () => {
-
+  // Dropzone.autoDiscover = false;
+  $(document).on('drop', e => e.preventDefault());
   const audio = $("#audio-source");
   const musicPlayer = new __WEBPACK_IMPORTED_MODULE_0__music_player__["a" /* default */]();
   const renderer = new __WEBPACK_IMPORTED_MODULE_1__renderer__["a" /* default */]();
@@ -88,16 +90,14 @@ $( () => {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+// import Dropzone from "./external_packages/dropzone";
+
 class MusicPlayer {
   constructor() {
-    this.mode = 'paused';
-    this.flippedMode = {};
-    this.flippedMode['paused'] = 'play';
-    this.flippedMode['play'] = 'paused';
-
     this.audio = $(".audio-source")[0];
     this.ctx = new (AudioContext || window.webkitAudioContext)();
     this.analyser = this.ctx.createAnalyser();
+
 
     this.analyser.fftSize = 2048;
     this.audioSrc = this.ctx.createMediaElementSource(this.audio);
@@ -109,10 +109,87 @@ class MusicPlayer {
     this.barCount = 64;
     this.heightMultiplier = 3;
 
-    this.addListeners();
-    // this.addBars();
+    this.samples = [
+      "sample_music/harderbetterfasterstronger.mp3",
+      "sample_music/Afrojack_Steve_Aoki_ft_Miss_Palmer_-_No_Beef_Official_Music_Video (mp3cut.net).mp3",
+      "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix[Mp3Converter.net].mp3"
+    ];
 
+    this.mode = 'paused';
+    this.flippedMode = {};
+    this.flippedMode['paused'] = 'play';
+    this.flippedMode['play'] = 'paused';
+
+    this.fetchHiddenName();
+    this.setupDropzone();
+    this.addListeners();
   }
+
+  processData(file) {
+    let x = 1;
+    return `/file-upload`;
+  }
+
+  setupDropzone() {
+    $(".dropzone").on({
+      dragstart: () => {
+      },
+
+      dragleave: () => {
+      },
+
+      dragenter: (e) => {
+      },
+
+      dragover: (e) => {
+          return false;
+      },
+
+      dragend: () => {
+      },
+      drop: (e)=> {
+        let reader = new FileReader();
+        // let fileTest;
+        reader.onload = evt => {
+          if (evt.target.result.slice(0,14) === "data:audio/mp3") {
+            $(".audio-source").attr('src', evt.target.result);
+          } else {
+            // TODO: show error
+          }
+          // evt.target.abort();
+        };
+        // debugger;
+        reader.readAsDataURL(e.originalEvent.dataTransfer.files[0]);
+
+        // while(reader.readyState !== 2) {
+        //
+        // }
+        // debugger;
+        //
+        let x = 1;
+
+        // debugger;
+        // let x = 1 + 1;
+
+        // reader.abort();
+      }
+    });
+  }
+
+  fetchHiddenName(){
+    if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+      this.hidden = "hidden";
+      this.visibilityChange = "visibilitychange";
+    } else if (typeof document.msHidden !== "undefined") {
+      this.hidden = "msHidden";
+      this.visibilityChange = "msvisibilitychange";
+    } else if (typeof document.webkitHidden !== "undefined") {
+      this.hidden = "webkitHidden";
+      this.visibilityChange = "webkitvisibilitychange";
+    }
+  }
+
+
 
   setRenderer(renderer) {
     this.renderer = renderer;
@@ -160,6 +237,11 @@ class MusicPlayer {
 
   addListeners() {
     $(".play-button").click(this.togglePlay.bind(this));
+    // $(document).on(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
+    $(".sample.1").click(this.switchSongs(1));
+    $(".sample.2").click(this.switchSongs(2));
+    $(".sample.3").click(this.switchSongs(3));
+    document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
   }
 
   togglePlay() {
@@ -176,6 +258,34 @@ class MusicPlayer {
         $(".play-button img").attr("src", "images/circular-pause-button.svg");
         this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
         break;
+    }
+  }
+
+  switchSongs(songId) {
+    return () => {
+      if (isNaN(songId)){
+
+      } else {
+        if (this.mode === 'play'){
+          this.mode = this.flippedMode[this.mode];
+          this.audio.pause();
+          $(".play-button img").attr("src", "images/circular-play-button.svg");
+          clearTimeout(this.timeoutId);
+          $(".audio-source").attr('src', this.samples[songId - 1]);
+        } else {
+          $(".audio-source").attr('src', this.samples[songId - 1]);
+        }
+      }
+    };
+  }
+
+  handleVisibilityChange(){
+    if (this.mode === 'play'){
+      if(document[this.hidden]){
+        clearTimeout(this.timeoutId);
+      } else {
+        this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
+      }
     }
   }
 }
@@ -310,8 +420,8 @@ class Renderer {
 
 
   drawData(freqArray) {
-    requestAnimationFrame(this.render.bind(this));
     this.soundBarsContainer.updateSoundBars(freqArray);
+    requestAnimationFrame(this.render.bind(this));
   }
 
   render () {

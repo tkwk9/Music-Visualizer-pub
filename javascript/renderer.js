@@ -115,8 +115,8 @@ class Renderer {
 
 
   drawData(freqArray) {
-    requestAnimationFrame(this.render.bind(this));
     this.soundBarsContainer.updateSoundBars(freqArray);
+    requestAnimationFrame(this.render.bind(this));
   }
 
   render () {

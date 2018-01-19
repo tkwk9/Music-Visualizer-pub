@@ -39,13 +39,19 @@ body {
   margin: 10px auto;
 }
 
-.drop-zone {
+.dropzone {
   width: 150px;
   height: 150px;
-  line-height: 150px;
+  /* line-height: 150px;
+  text-align: center;
+  vertical-align: middle; */
+  border: 1px solid black;
+}
+.dropzone input{
+  /* line-height: 150px; */
   text-align: center;
   vertical-align: middle;
-  border: 1px solid black;
+  /* border: 1px solid black; */
 }
 
 #canvas {
