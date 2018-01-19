@@ -1,44 +1,16 @@
 import SoundBarsContainer from './sound_bars_container';
 import THREELib from 'three-js';
-const THREE = THREELib(["EffectComposer", "ShaderPass", "RenderPass", "HorizontalBlurShader", "VerticalBlurShader", "CopyShader", "MaskPass"]);
 import AdditiveBlendShader from "./shaders/additive_blend_shader";
-// THREE.AdditiveBlendShader = {
-//
-// 	uniforms: {
-//
-// 		"tDiffuse1": { type: "t", value: null },
-// 		"tDiffuse2": { type: "t", value: null }
-// 	},
-//
-// 	vertexShader: [
-//
-// 		"varying vec2 vUv;",
-//
-// 		"void main() {",
-//
-// 			"vUv = uv;",
-// 			"gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );",
-//
-// 		"}"
-//
-// 	].join("\n"),
-//
-// 	fragmentShader: [
-//
-// 		"uniform sampler2D tDiffuse1;",
-// 		"uniform sampler2D tDiffuse2;",
-//
-// 		"varying vec2 vUv;",
-//
-// 		"void main() {",
-//
-// 			"vec4 texel1 = texture2D( tDiffuse1, vUv );",
-// 			"vec4 texel2 = texture2D( tDiffuse2, vUv );",
-// 			"gl_FragColor = texel1 + texel2;",
-// 		"}"
-//
-// 	].join("\n")
-// };
+import {degToRadian} from './util';
+const THREE = THREELib([
+  "EffectComposer",
+  "ShaderPass",
+  "RenderPass",
+  "HorizontalBlurShader",
+  "VerticalBlurShader",
+  "CopyShader",
+  "MaskPass"
+]);
 
 class Renderer {
   constructor() {
@@ -47,14 +19,15 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 2;
-    this.cameraPosition = [100, 20, 220];
+    this.bluriness = 4;
+    this.cameraPosition = [290, 20, 140];
+    this.cameraRotation = [0, degToRadian(45), 0];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
     this.width = 1500;
-    this.height = 500;
+    this.height = 700;
     this.renderer.setSize(this.width, this.height);
 
     // Scene Setup
@@ -65,22 +38,25 @@ class Renderer {
     this.mainCamera =
       new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
     this.mainCamera.position.set(...this.cameraPosition);
+    this.mainCamera.rotation.set(...this.cameraRotation);
 
     this.glowCamera =
       new THREE.PerspectiveCamera(20, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
+    this.glowCamera.rotation.set(...this.cameraRotation);
 
     // this.mainCamera.rotation.set(this.toRadian(-10.29),this.toRadian(75.69),this.toRadian(9.78));
 
-    this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.ambLight = new THREE.AmbientLight(0xffffff, 0.25);
     this.mainScene.add(this.ambLight);
+
+    this.pointLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.pointLight.position.set(4,6,2);
+    this.mainScene.add(this.pointLight);
 
     this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.glowScene.add(this.glowAmbLight);
 
-    // this.pointLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    // this.pointLight.position.set(4,6,2);
-    // this.mainScene.add(this.pointLight);
     //GLOW
     // this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0.5);
     // this.glowPointLight.position.set(4,6,2);
@@ -133,9 +109,7 @@ class Renderer {
     this.soundBarsContainer.createSoundBars(this.mainScene, this.glowScene, barCount);
   }
 
-  toRadian(degree) {
-    return degree * Math.PI/180;
-  }
+
 
   drawData(freqArray) {
     requestAnimationFrame(this.render.bind(this));

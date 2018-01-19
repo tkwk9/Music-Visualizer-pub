@@ -16,7 +16,7 @@ class MusicPlayer {
     this.audioSrc.connect(this.analyser);
     this.audioSrc.connect(this.ctx.destination);
 
-    this.barCount = 128;
+    this.barCount = 32;
     this.heightMultiplier = 3;
 
     this.addListeners();
