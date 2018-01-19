@@ -5,18 +5,18 @@ class SoundBarsContainer {
     this.soundBars = [];
   }
 
-  createSoundBars(scene, camera, barCount) {
+  createSoundBars(scene, glowScene, barCount) {
     this.barCount = barCount;
     for(let i = 0; i < barCount; i++) {
       let settings = {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        color: 0x000000,
+        color: 0xffffff,
         emissive: 0xffffff,
-        emissiveIntensity: 0.5
-        // F3FFE2
+        emissiveIntensity: 0.1,
+        glowColor: 0x91ff56,
       };
-      this.soundBars.push(new SoundBar(settings, camera, scene));
+      this.soundBars.push(new SoundBar(settings, scene, glowScene));
     }
   }
 

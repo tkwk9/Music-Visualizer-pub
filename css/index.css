@@ -48,6 +48,10 @@ body {
   border: 1px solid black;
 }
 
+#canvas {
+  border: 1px solid red;
+}
+
 .test {
   width: 1500px;
   height: 300px;
