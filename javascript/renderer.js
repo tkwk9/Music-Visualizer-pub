@@ -122,7 +122,7 @@ class Renderer {
   render () {
     let x = this.mainCamera.position.x;
     let z = this.mainCamera.position.z;
-    let delta = 0.001;
+    let delta = 0.005;
 
     this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
     this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);

@@ -317,7 +317,7 @@ class Renderer {
   render () {
     let x = this.mainCamera.position.x;
     let z = this.mainCamera.position.z;
-    let delta = 0.001;
+    let delta = 0.005;
 
     this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
     this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
@@ -360,7 +360,7 @@ class SoundBarsContainer {
       let settings = {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        color: 0x686768,
+        color: 0x595759,
         emissive: 0x25c4a7,
         emissiveIntensity: 0.1,
         glowColor: 0x009933,

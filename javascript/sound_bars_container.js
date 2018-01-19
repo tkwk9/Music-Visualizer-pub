@@ -15,7 +15,7 @@ class SoundBarsContainer {
       let settings = {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        color: 0x686768,
+        color: 0x595759,
         emissive: 0x25c4a7,
         emissiveIntensity: 0.1,
         glowColor: 0x009933,
