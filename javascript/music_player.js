@@ -39,9 +39,9 @@ class MusicPlayer {
     });
   }
 
-  letThereBe() {
+  renderLoop() {
     this.renderer.drawData(this.processFreqArray());
-    this.timeoutId = setTimeout(this.letThereBe.bind(this), 16);
+    this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
   }
 
   shuffleArray(array) {
@@ -84,7 +84,7 @@ class MusicPlayer {
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
         $(".play-button img").attr("src", "images/circular-pause-button.svg");
-        this.timeoutId = setTimeout(this.letThereBe.bind(this), 16); // timeout enables Soundbar Visuals
+        this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
         break;
     }
   }

@@ -19,7 +19,7 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 2.5;
+    this.bluriness = 4;
     this.cameraPosition = [150, 30, 80];
     // this.cameraRotation = [degToRadian(-15), degToRadian(55), degToRadian(15)];
 
@@ -61,9 +61,9 @@ class Renderer {
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
-    // this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0.5);
-    // this.glowPointLight.position.set(4,6,2);
-    // this.glowScene.add(this.glowPointLight);
+    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    this.glowPointLight.position.set(4,6,2);
+    this.glowScene.add(this.glowPointLight);
 
     let renderTargetParameters = {
       minFilter: THREE.LinearFilter,
@@ -132,8 +132,8 @@ class Renderer {
     this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
     this.glowCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
 
-    this.mainComposer.render();
     this.glowComposer.render();
+    this.mainComposer.render();
   }
 }
 
