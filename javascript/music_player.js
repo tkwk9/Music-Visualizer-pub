@@ -64,22 +64,9 @@ class MusicPlayer {
           } else {
             // TODO: show error
           }
-          // evt.target.abort();
         };
-        // debugger;
         reader.readAsDataURL(e.originalEvent.dataTransfer.files[0]);
-
-        // while(reader.readyState !== 2) {
-        //
-        // }
-        // debugger;
-        //
         let x = 1;
-
-        // debugger;
-        // let x = 1 + 1;
-
-        // reader.abort();
       }
     });
   }
@@ -133,9 +120,10 @@ class MusicPlayer {
     let tempArray = [];
 
     for (let i = 0; i<this.barCount ; i++) {
-      let val = this.freqArray[i] + 140;
-      // let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
-      let curveIntensity = 2;
+      let val = Math.max(this.freqArray[i] + 140, 0);
+      // console.log(val);
+      let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      // let curveIntensity = 2;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }

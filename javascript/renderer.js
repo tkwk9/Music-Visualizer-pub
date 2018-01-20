@@ -9,7 +9,8 @@ const THREE = THREELib([
   "HorizontalBlurShader",
   "VerticalBlurShader",
   "CopyShader",
-  "MaskPass"
+  "MaskPass",
+  "OrbitControls"
 ]);
 
 class Renderer {
@@ -19,14 +20,14 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 4;
-    this.cameraPosition = [150, 30, 80];
-    // this.cameraRotation = [degToRadian(-15), degToRadian(55), degToRadian(15)];
+    this.bluriness = 3;
+    // this.cameraPosition = [157, 30, 60];
+    this.cameraPosition = [51, 30, 130];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1000;
+    this.width = 1200;
     this.height = 700;
     this.renderer.setSize(this.width, this.height);
 
@@ -34,21 +35,32 @@ class Renderer {
     this.mainScene = new THREE.Scene();
     this.glowScene = new THREE.Scene();
 
+    this.center = new THREE.Vector3(67/2 + ((67/2) * 0.5), 10, 0);
+
     // Camera Setup
     this.mainCamera =
       new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.mainCamera.position.set(...this.cameraPosition);
-    // this.mainCamera.rotation.set(...this.cameraRotation);
+    this.mainCamera.lookAt(this.center);
 
-    this.mainCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
+    this.mainControl = new THREE.OrbitControls(this.mainCamera);
+    this.mainControl.autoRotateSpeed = -2;
+    this.mainControl.autoRotate = true;
+    this.mainControl.target = this.center;
+    this.mainControl.update();
+
 
     this.glowCamera =
       new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    // this.glowCamera.rotation.set(...this.cameraRotation);
+    this.glowCamera.lookAt(this.center);
 
-    this.glowCamera.lookAt(new THREE.Vector3(this.barcount/2 + ((this.barcount/2) * 0.5), 10, 0));
-    // this.mainCamera.rotation.set(this.toRadian(-10.29),this.toRadian(75.69),this.toRadian(9.78));
+    this.glowControl = new THREE.OrbitControls(this.glowCamera);
+    this.glowControl.autoRotateSpeed = -2;
+    this.glowControl.autoRotate = true;
+    this.glowControl.target = this.center;
+    this.glowControl.update();
+    // Lights
 
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.mainScene.add(this.ambLight);
@@ -57,11 +69,11 @@ class Renderer {
     this.pointLight.position.set(4,6,2);
     this.mainScene.add(this.pointLight);
 
-    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 0.75);
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1);
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
-    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0.5);
+    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 1);
     this.glowPointLight.position.set(4,6,2);
     this.glowScene.add(this.glowPointLight);
 
@@ -112,8 +124,6 @@ class Renderer {
     this.soundBarsContainer.createSoundBars(this.mainScene, this.glowScene, barCount);
   }
 
-
-
   drawData(freqArray) {
     this.soundBarsContainer.updateSoundBars(freqArray);
     requestAnimationFrame(this.render.bind(this));
@@ -124,16 +134,19 @@ class Renderer {
     let z = this.mainCamera.position.z;
     let delta = 0.005;
 
-    this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
-    this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    this.mainCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+    this.mainControl.update();
+    this.glowControl.update();
 
-    this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
-    this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    this.glowCamera.lookAt(new THREE.Vector3(63/2 + ((63/2) * 0.5), 10, 0));
+    // this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    // this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.mainCamera.lookAt(this.center);
 
-    this.glowComposer.render();
+    // this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
+    // this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
+    this.glowCamera.lookAt(this.center);
+
     this.mainComposer.render();
+    this.glowComposer.render();
   }
 }
 

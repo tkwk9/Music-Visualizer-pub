@@ -55,7 +55,10 @@ body {
 }
 
 #canvas {
-  border: 1px solid red;
+  position:absolute;
+  bottom: 0;
+  right: 0;
+  /* border: 1px solid red; */
 }
 
 .test {
