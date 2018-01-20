@@ -56,8 +56,10 @@ body {
 
 #canvas {
   position:absolute;
+  background-color: transparent;
   bottom: 0;
   right: 0;
+  z-index: -1
   /* border: 1px solid red; */
 }
 

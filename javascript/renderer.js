@@ -17,37 +17,44 @@ class Renderer {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: $("#canvas")[0],
+      alpha: true,
       antialias: true
     });
 
     this.bluriness = 2;
-    // this.cameraPosition = [157, 30, 60];
 
-    this.cameraPosition = [-19.629262331960803, 47.16337406952673, 70.5704374318499];
+    // this.cameraPosition = [-5.505498417206258, 29.86307067902552, 52.82251936660209];
+    // this.cameraPosition = [100.38658021594671, 53.43372770100428, -111.97734413394056];
+    // this.cameraPosition = [125.23732204574198, 32.549108785623254, 3.073917311006665];
+    this.cameraPosition = [145.34747497479822, 32.495897120091016, 27.26094794351393];
+    this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
 
-    this.renderer.setClearColor(0x000000);
+    // this.renderer.setClearColor(0x000000);
+    this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1200;
-    this.height = 700;
+    this.width = 1150;
+    this.height = 600;
     this.renderer.setSize(this.width, this.height);
 
     // Scene Setup
     this.mainScene = new THREE.Scene();
     this.glowScene = new THREE.Scene();
 
-    this.center = new THREE.Vector3(67/2 + ((67/2) * 0.5), 10, 0);
+    this.center = new THREE.Vector3(35 + 35* 0.5, 5, 0);
 
     // Camera Setup
     this.mainCamera =
       new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
-    this.mainCamera.lookAt(this.center);
+    this.mainCamera.rotation.set(...this.cameraRotation);
+    // this.mainCamera.lookAt(this.center);
 
     this.mainControl = new THREE.OrbitControls(this.mainCamera);
     this.mainControl.autoRotateSpeed = -2;
-    this.mainControl.autoRotate = false;
+    this.mainControl.autoRotate = true;
+    this.mainControl.enabled = false;
     this.mainControl.target = this.center;
     this.mainControl.update();
 
@@ -55,11 +62,17 @@ class Renderer {
     this.glowCamera =
       new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    this.glowCamera.lookAt(this.center);
+    this.glowCamera.rotation.set(...this.cameraRotation);
+    // this.glowCamera.lookAt(this.center);
+    // cam.rotation
+// THREE.Euler {_x: -0.5063199752210983, _y: -0.48896218068469827, _z: -0.2548097566813358, _order: "XYZ", onChangeCallback: ƒ}
+// cam.position
+// THREE.Vector3 {x: -13.6267388438973, y: 54.18687440973605, z: 67.3112809465422}
 
     this.glowControl = new THREE.OrbitControls(this.glowCamera);
     this.glowControl.autoRotateSpeed = -2;
-    this.glowControl.autoRotate = false;
+    this.glowControl.autoRotate = true;
+    this.glowControl.enabled = false;
     this.glowControl.target = this.center;
     this.glowControl.update();
     // Lights
@@ -144,11 +157,11 @@ class Renderer {
 
     // this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
     // this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    this.mainCamera.lookAt(this.center);
+    // this.mainCamera.lookAt(this.centexr);
 
     // this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
     // this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    this.glowCamera.lookAt(this.center);
+    // this.glowCamera.lookAt(this.center);
 
     this.mainComposer.render();
     this.glowComposer.render();

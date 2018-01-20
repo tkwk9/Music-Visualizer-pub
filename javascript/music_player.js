@@ -31,6 +31,11 @@ class MusicPlayer {
     this.fetchHiddenName();
     this.setupDropzone();
     this.addListeners();
+
+    this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
+
+
+
   }
 
   processData(file) {
@@ -60,6 +65,8 @@ class MusicPlayer {
         // let fileTest;
         reader.onload = evt => {
           if (evt.target.result.slice(0,14) === "data:audio/mp3") {
+            this.audiocrossOrigin = "anonymous";
+            // $(".audio-source").attr("cross-origin", "anonymous");
             $(".audio-source").attr('src', evt.target.result);
           } else {
             // TODO: show error
@@ -146,13 +153,13 @@ class MusicPlayer {
         this.mode = this.flippedMode[this.mode];
         this.audio.pause();
         $(".play-button img").attr("src", "images/circular-play-button.svg");
-        clearTimeout(this.timeoutId);
+        // clearTimeout(this.timeoutId);
         break;
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
         $(".play-button img").attr("src", "images/circular-pause-button.svg");
-        this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
+        // this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
         break;
     }
   }
@@ -166,8 +173,8 @@ class MusicPlayer {
           this.mode = this.flippedMode[this.mode];
           this.audio.pause();
           $(".play-button img").attr("src", "images/circular-play-button.svg");
-          clearTimeout(this.timeoutId);
           $(".audio-source").attr('src', this.samples[songId - 1]);
+          this.audio.play();
         } else {
           $(".audio-source").attr('src', this.samples[songId - 1]);
         }

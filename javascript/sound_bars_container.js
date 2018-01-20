@@ -24,7 +24,7 @@ class SoundBarsContainer {
         emissive: 0x25c4a7,
         // emissive: 0x25c4a7,
         // emissiveIntensity: 0.2,
-        emissiveIntensity: 0,
+        emissiveIntensity: 0.1,
         glowColor: 0x009933,
         glowIntensity: 1,
         highColor: [209, 2, 171],
