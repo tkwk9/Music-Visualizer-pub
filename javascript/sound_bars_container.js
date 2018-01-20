@@ -15,9 +15,16 @@ class SoundBarsContainer {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
         // color: 0x595759,
-        color: 0x848484,
+        // color: 0x8e8e8e,
+        color: 0x636363,
+        // color: 0x565656,
+        // color: 0x777777,
+        // color: 0x54521d,
+        // emissive: 0xa5000b,
         emissive: 0x25c4a7,
-        emissiveIntensity: 0.1,
+        // emissive: 0x25c4a7,
+        // emissiveIntensity: 0.2,
+        emissiveIntensity: 0,
         glowColor: 0x009933,
         glowIntensity: 1,
         highColor: [209, 2, 171],
@@ -25,10 +32,10 @@ class SoundBarsContainer {
       };
 
       if (i < 35) {
-        settings.highColor = pickHexArray([0, 131, 142], [209, 2, 171], (i)/35);
+        settings.highColor = pickHexArray([5, 136, 252], [209, 2, 171], (i)/35);
         settings.lowColor = pickHexArray([26, 73, 27], [74, 50, 130], (i)/35);
       } else if (i < 70) {
-        settings.highColor = pickHexArray([209, 2, 171], [0, 131, 142], (i- 35)/35);
+        settings.highColor = pickHexArray([209, 2, 171], [5, 136, 252], (i- 35)/35);
         settings.lowColor = pickHexArray([74, 50, 130], [26, 73, 27], (i- 35)/35);
       }
 

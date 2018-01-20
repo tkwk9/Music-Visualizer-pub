@@ -287,15 +287,15 @@ class MusicPlayer {
 
 "use strict";
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound_bars_container__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__shaders_additive_blend_shader__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shaders_additive_blend_shader__ = __webpack_require__(79);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_three_js__);
 
 
 
 
-const THREE = __WEBPACK_IMPORTED_MODULE_1_three_js___default()([
+const THREE = __WEBPACK_IMPORTED_MODULE_3_three_js___default()([
   "EffectComposer",
   "ShaderPass",
   "RenderPass",
@@ -313,9 +313,10 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 3;
+    this.bluriness = 2;
     // this.cameraPosition = [157, 30, 60];
-    this.cameraPosition = [51, 30, 130];
+
+    this.cameraPosition = [-19.629262331960803, 47.16337406952673, 70.5704374318499];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -332,25 +333,26 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+    window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
     this.mainCamera.lookAt(this.center);
 
     this.mainControl = new THREE.OrbitControls(this.mainCamera);
     this.mainControl.autoRotateSpeed = -2;
-    this.mainControl.autoRotate = true;
+    this.mainControl.autoRotate = false;
     this.mainControl.target = this.center;
     this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
     this.glowCamera.lookAt(this.center);
 
     this.glowControl = new THREE.OrbitControls(this.glowCamera);
     this.glowControl.autoRotateSpeed = -2;
-    this.glowControl.autoRotate = true;
+    this.glowControl.autoRotate = false;
     this.glowControl.target = this.center;
     this.glowControl.update();
     // Lights
@@ -360,6 +362,9 @@ class Renderer {
 
     this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.pointLight.position.set(4,6,2);
+    this.dirLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    this.dirLight.position.set(-4,6,-2);
+    this.mainScene.add(this.dirLight);
     this.mainScene.add(this.pointLight);
 
     this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1);
@@ -404,7 +409,7 @@ class Renderer {
     this.mainComposer.addPass(renderModel);
 
     const blendShaderPass =
-      new THREE.ShaderPass(__WEBPACK_IMPORTED_MODULE_2__shaders_additive_blend_shader__["a" /* default */], "tDiffuse1");
+      new THREE.ShaderPass(__WEBPACK_IMPORTED_MODULE_1__shaders_additive_blend_shader__["a" /* default */], "tDiffuse1");
     blendShaderPass.uniforms['tDiffuse2'].value =
       this.glowComposer.renderTarget2;
     blendShaderPass.renderToScreen = true;
@@ -471,9 +476,16 @@ class SoundBarsContainer {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
         // color: 0x595759,
-        color: 0x848484,
+        // color: 0x8e8e8e,
+        color: 0x636363,
+        // color: 0x565656,
+        // color: 0x777777,
+        // color: 0x54521d,
+        // emissive: 0xa5000b,
         emissive: 0x25c4a7,
-        emissiveIntensity: 0.1,
+        // emissive: 0x25c4a7,
+        // emissiveIntensity: 0.2,
+        emissiveIntensity: 0,
         glowColor: 0x009933,
         glowIntensity: 1,
         highColor: [209, 2, 171],
@@ -481,11 +493,11 @@ class SoundBarsContainer {
       };
 
       if (i < 35) {
-        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([0, 131, 142], [209, 2, 171], (i)/35);
-        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([26, 73, 27], [74, 50, 130], (i)/35);
+        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([5, 136, 252], [209, 2, 171], (i)/35);
+        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([26, 73, 27], [74, 50, 130], (i)/35);
       } else if (i < 70) {
-        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([209, 2, 171], [0, 131, 142], (i- 35)/35);
-        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([74, 50, 130], [26, 73, 27], (i- 35)/35);
+        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([209, 2, 171], [5, 136, 252], (i- 35)/35);
+        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([74, 50, 130], [26, 73, 27], (i- 35)/35);
       }
 
 
@@ -625,17 +637,56 @@ class SoundBarsContainer {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three_js__ = __webpack_require__(14);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_three_js__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_js__);
 
 
-const THREE = __WEBPACK_IMPORTED_MODULE_0_three_js___default()();
-
+const THREE = __WEBPACK_IMPORTED_MODULE_1_three_js___default()([
+  // "SubdivisionModifier",
+  // "EffectComposer",
+  // "ShaderPass",
+  // "RenderPass",
+  // "HorizontalBlurShader",
+  // "VerticalBlurShader",
+  // "CopyShader",
+  // "MaskPass",
+  // "OrbitControls"
+]);
 class SoundBar {
   constructor(settings, scene, glowScene) {
     this.settings = settings;
-    this.geometry = new THREE.BoxGeometry(...settings.scale);
+    // this.geometry = new THREE.BoxGeometry(...settings.scale);
+    // this.geometry = new THREE.CylinderGeometry (0.9, 0.1, 1, 6);
+    // this.geometry = new THREE.CylinderGeometry (0.8, 0.6, 1, 10);
+    this.geometry = new THREE.SphereGeometry( 0.6, 10, 10 );
+    // this.geometry = new THREE.IcosahedronGeometry( 1, 0);
+    // this.geometry = new THREE.SphereGeometry( 1, 5, 5 );
+//     var length = 0.25, width = 0.25;
+//
+var shape = new THREE.Shape();
+shape.moveTo( 0,0 );
+shape.lineTo( 0, 0.5 );
+shape.lineTo( 0.5, 0.5 );
+shape.lineTo( 0.5, 0 );
+shape.lineTo( 0, 0 );
+
+var extrudeSettings = {
+	steps: 1,
+	amount: 0.5,
+	bevelEnabled: true,
+	bevelThickness: 0.2,
+	bevelSize: 0.2,
+	bevelSegments: 4
+};
+
+// this.geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
+
+    // var SubdivisionModifier = require('three-subdivision-modifier');
+    //
+    // var modifier = new SubdivisionModifier( 2 ); // Number of subdivisions
+    //
+    // modifier.modify( this.geometry );
 
     this.lowColor = settings.lowColor;
     this.highColor = settings.highColor;
@@ -647,6 +698,7 @@ class SoundBar {
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(...settings.pos);
+    this.mesh.rotation.x += Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* degToRadian */])(90);
     scene.add(this.mesh);
 
     //glow
@@ -661,7 +713,8 @@ class SoundBar {
     this.glowMesh = new THREE.Mesh(this.geometry, this.glowMaterial);
     this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
     this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
-    this.glowMesh.scale.set(this.mesh.scale.x + 0.1, this.mesh.scale.y + 0.1, this.mesh.scale.z + 0.1);
+    this.glowMesh.rotation.x += Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* degToRadian */])(90);
+    // this.glowMesh.scale.set(this.mesh.scale.x + 0.1, this.mesh.scale.y + 0.1, this.mesh.scale.z + 0.1);
     // this.glowMesh.scale.set(this.mesh.scale * 1.1);
     glowScene.add(this.glowMesh);
 
@@ -673,13 +726,23 @@ class SoundBar {
 
   setHeight(height) {
     this.height = height;
-    let modHeight = Math.max(0, height);
-    let color = Object(__WEBPACK_IMPORTED_MODULE_1__util__["a" /* pickHex */])(this.highColor, this.lowColor, modHeight/15);
+    let modHeight = Math.max(0, this.height);
+    let color = Object(__WEBPACK_IMPORTED_MODULE_0__util__["b" /* pickHex */])(this.highColor, this.lowColor, modHeight/15);
     this.glowMaterial.color.set(color);
-    this.mesh.position.y = modHeight/2 + 0.1;
-    this.mesh.scale.y = modHeight + 0.1;
-    this.glowMesh.position.y = this.mesh.position.y+ 0.1;
-    this.glowMesh.scale.y = this.mesh.scale.y + 0.2;
+    // this.glowMesh.position.y = modHeight/2 + 0.5;
+    // this.glowMesh.scale.y = modHeight + 1;
+    this.mesh.position.y = modHeight;
+    // this.mesh.position.y = this.glowMesh.position.y + (this.glowMesh.scale.y*2)/3;
+    // this.mesh.amount = modHeight + 1;
+    // this.glowMesh.position.y = this.mesh.position.y+ 0.5;
+    // this.glowMesh.position.y = this.mesh.position.y+ 0.5;
+    // this.glowMesh.scale.y = this.mesh.scale.y + 1;
+    // this.glowMesh.position.y = this.mesh.position.y;
+    // this.glowMesh.amount = this.mesh.amount;
+    // this.glowMesh.scale.y = this.mesh.scale.y;
+    // this.glowMesh.scale.y = this.mesh.scale.y;
+    this.glowMesh.position.y = this.mesh.position.y;
+    // this.glowMesh.scale.y = modHeight/2;
     // this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
     // this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
   }
@@ -53673,7 +53736,7 @@ const pickHex = (color1, color2, weight) => {
         Math.round(color1[2] * w1 + color2[2] * w2)];
     return `rgb(${Math.max(0,rgb[0])}, ${Math.max(0,rgb[1])}, ${Math.max(0,rgb[2])})`;
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = pickHex;
+/* harmony export (immutable) */ __webpack_exports__["b"] = pickHex;
 
 const pickHexArray = (color1, color2, weight) => {
     let w1 = weight;
@@ -53683,13 +53746,13 @@ const pickHexArray = (color1, color2, weight) => {
         Math.round(color1[2] * w1 + color2[2] * w2)];
     return [Math.max(0,rgb[0]), Math.max(0,rgb[1]), Math.max(0,rgb[2])];
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = pickHexArray;
+/* harmony export (immutable) */ __webpack_exports__["c"] = pickHexArray;
 
 
 const degToRadian = (deg) => {
     return deg * Math.PI/180;
 };
-/* unused harmony export degToRadian */
+/* harmony export (immutable) */ __webpack_exports__["a"] = degToRadian;
 
 
 

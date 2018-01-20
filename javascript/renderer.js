@@ -1,7 +1,7 @@
 import SoundBarsContainer from './sound_bars_container';
-import THREELib from 'three-js';
 import AdditiveBlendShader from "./shaders/additive_blend_shader";
 import {degToRadian} from './util';
+import THREELib from 'three-js';
 const THREE = THREELib([
   "EffectComposer",
   "ShaderPass",
@@ -20,9 +20,10 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 3;
+    this.bluriness = 2;
     // this.cameraPosition = [157, 30, 60];
-    this.cameraPosition = [51, 30, 130];
+
+    this.cameraPosition = [-19.629262331960803, 47.16337406952673, 70.5704374318499];
 
     this.renderer.setClearColor(0x000000);
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -39,25 +40,26 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+    window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
     this.mainCamera.lookAt(this.center);
 
     this.mainControl = new THREE.OrbitControls(this.mainCamera);
     this.mainControl.autoRotateSpeed = -2;
-    this.mainControl.autoRotate = true;
+    this.mainControl.autoRotate = false;
     this.mainControl.target = this.center;
     this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(30, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
     this.glowCamera.lookAt(this.center);
 
     this.glowControl = new THREE.OrbitControls(this.glowCamera);
     this.glowControl.autoRotateSpeed = -2;
-    this.glowControl.autoRotate = true;
+    this.glowControl.autoRotate = false;
     this.glowControl.target = this.center;
     this.glowControl.update();
     // Lights
@@ -67,6 +69,9 @@ class Renderer {
 
     this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.pointLight.position.set(4,6,2);
+    this.dirLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    this.dirLight.position.set(-4,6,-2);
+    this.mainScene.add(this.dirLight);
     this.mainScene.add(this.pointLight);
 
     this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1);
