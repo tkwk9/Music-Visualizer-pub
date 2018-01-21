@@ -76,7 +76,7 @@ const pickHex = (color1, color2, weight) => {
         Math.round(color1[2] * w1 + color2[2] * w2)];
     return `rgb(${Math.max(0,rgb[0])}, ${Math.max(0,rgb[1])}, ${Math.max(0,rgb[2])})`;
 };
-/* harmony export (immutable) */ __webpack_exports__["b"] = pickHex;
+/* harmony export (immutable) */ __webpack_exports__["a"] = pickHex;
 
 const pickHexArray = (color1, color2, weight) => {
     let w1 = weight;
@@ -86,13 +86,13 @@ const pickHexArray = (color1, color2, weight) => {
         Math.round(color1[2] * w1 + color2[2] * w2)];
     return [Math.max(0,rgb[0]), Math.max(0,rgb[1]), Math.max(0,rgb[2])];
 };
-/* harmony export (immutable) */ __webpack_exports__["c"] = pickHexArray;
+/* harmony export (immutable) */ __webpack_exports__["b"] = pickHexArray;
 
 
 const degToRadian = (deg) => {
     return deg * Math.PI/180;
 };
-/* harmony export (immutable) */ __webpack_exports__["a"] = degToRadian;
+/* unused harmony export degToRadian */
 
 
 
@@ -150,10 +150,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-// import Dropzone from "./external_packages/dropzone";
 
 $( () => {
-  // Dropzone.autoDiscover = false;
+  // TODO: DELETE
   $(document).on('drop', e => e.preventDefault());
   const audio = $("#audio-source");
   const musicPlayer = new __WEBPACK_IMPORTED_MODULE_0__music_player__["a" /* default */]();
@@ -173,9 +172,10 @@ class MusicPlayer {
   constructor() {
     this.audio = $(".audio-source")[0];
     this.ctx = new (AudioContext || window.webkitAudioContext)();
+
+    this.audio.volume = 0.1;
+
     this.analyser = this.ctx.createAnalyser();
-
-
     this.analyser.fftSize = 2048;
     this.audioSrc = this.ctx.createMediaElementSource(this.audio);
     this.freqArray = new Float32Array(this.analyser.frequencyBinCount);
@@ -187,9 +187,18 @@ class MusicPlayer {
     this.heightMultiplier = 3;
 
     this.samples = [
-      "sample_music/harderbetterfasterstronger.mp3",
-      "sample_music/Afrojack_Steve_Aoki_ft_Miss_Palmer_-_No_Beef_Official_Music_Video (mp3cut.net).mp3",
-      "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix[Mp3Converter.net].mp3"
+      "sample_music/Afrojack_Steve_Aoki_No_Beef_Clip.mp3",
+      "sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3",
+      "sample_music/ODESZA_-_Say_My_Name.mp3",
+      "sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix.mp3",
+      "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix.mp3",
+      "sample_music/Teemid_-_Crazy_feat_Joie_Tan_Gnarls_Barkely_Cover.mp3",
+      "sample_music/Daft_Punk_-_Harder_Better_Faster_Stronger.mp3",
+      "sample_music/Flight_Facilities_-_Crave_you.mp3",
+      "sample_music/Bruno_Mars_-_Finesse_Remix_Feat_Cardi_B.mp3",
+      "sample_music/Bebe_Rexha_-_Meant_to_Be.mp3",
+      "sample_music/Bebe_Rexha_-_The_Way_I_Are_Dance_With_Somebody.mp3",
+      "sample_music/Chance_The_Rapper_-_Good_Ass_Intro.mp3",
     ];
 
     this.mode = 'paused';
@@ -198,20 +207,14 @@ class MusicPlayer {
     this.flippedMode['play'] = 'paused';
 
     this.fetchHiddenName();
+    // TODO: remove
     this.setupDropzone();
     this.addListeners();
 
     this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-
-
-
   }
 
-  processData(file) {
-    let x = 1;
-    return `/file-upload`;
-  }
-
+  // TODO: remove
   setupDropzone() {
     $(".dropzone").on({
       dragstart: () => {
@@ -260,35 +263,14 @@ class MusicPlayer {
     }
   }
 
-
-
   setRenderer(renderer) {
     this.renderer = renderer;
     this.renderer.setupSoundBars(this.barCount);
   }
 
-  addBars() { // This is Test Function, this will move somewhere else
-    let tempArray = [];
-    for (let i = 0; i < this.barCount ; i++){
-      tempArray.push($(`<div class="testDivs ${i}"></div>`));
-    }
-    tempArray.forEach(div => {
-      $(".test").append(div);
-    });
-  }
-
   renderLoop() {
     this.renderer.drawData(this.processFreqArray());
     this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-  }
-
-  shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-      }
   }
 
   processFreqArray() {
@@ -297,9 +279,7 @@ class MusicPlayer {
 
     for (let i = 0; i<this.barCount ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      // console.log(val);
       let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
-      // let curveIntensity = 2;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
@@ -309,10 +289,19 @@ class MusicPlayer {
 
   addListeners() {
     $(".play-button").click(this.togglePlay.bind(this));
-    // $(document).on(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
     $(".sample.1").click(this.switchSongs(1));
     $(".sample.2").click(this.switchSongs(2));
     $(".sample.3").click(this.switchSongs(3));
+    $(".sample.4").click(this.switchSongs(4));
+    $(".sample.5").click(this.switchSongs(5));
+    $(".sample.6").click(this.switchSongs(6));
+    $(".sample.7").click(this.switchSongs(7));
+    $(".sample.8").click(this.switchSongs(8));
+    $(".sample.9").click(this.switchSongs(9));
+    $(".sample.10").click(this.switchSongs(10));
+    $(".sample.11").click(this.switchSongs(11));
+    $(".sample.12").click(this.switchSongs(12));
+    $(".slider").change(e => (this.audio.volume = e.target.value/100));
     document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
   }
 
@@ -322,13 +311,11 @@ class MusicPlayer {
         this.mode = this.flippedMode[this.mode];
         this.audio.pause();
         $(".play-button img").attr("src", "images/circular-play-button.svg");
-        // clearTimeout(this.timeoutId);
         break;
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
         $(".play-button img").attr("src", "images/circular-pause-button.svg");
-        // this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
         break;
     }
   }
@@ -394,14 +381,12 @@ class Renderer {
   constructor() {
     this.renderer = new THREE.WebGLRenderer({
       canvas: $("#canvas")[0],
-      alpha: true,
       antialias: true
     });
 
     this.bluriness = 2;
 
-    this.cameraPosition = [0, 53.425430779914635, 94.11947595110834];
-    // this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
+    this.cameraPosition = [-23.42959864476863, 44.0308677857665, -80.80610975224909];
 
     this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -414,42 +399,33 @@ class Renderer {
     this.mainScene = new THREE.Scene();
     this.glowScene = new THREE.Scene();
 
-    this.center = new THREE.Vector3(35 + 35* 0.5, 5, 0);
-
     // Camera Setup
     this.mainCamera =
       new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
-    // this.mainCamera.rotation.set(...this.cameraRotation);
-    // this.mainCamera.lookAt(this.center);
 
-    this.mainControl = new THREE.OrbitControls(this.mainCamera);
+    this.mainControl = new THREE.OrbitControls(this.mainCamera, $("#canvas")[0]);
     this.mainControl.autoRotateSpeed = -2;
     this.mainControl.autoRotate = true;
-    // this.mainControl.enabled = false;
-    this.mainControl.target = this.center;
+    this.mainControl.enablePan = false;
+    this.mainControl.enableKeys = false;
     this.mainControl.update();
 
 
     this.glowCamera =
       new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    // this.glowCamera.rotation.set(...this.cameraRotation);
-    // this.glowCamera.lookAt(this.center);
-    // cam.rotation
-// THREE.Euler {_x: -0.5063199752210983, _y: -0.48896218068469827, _z: -0.2548097566813358, _order: "XYZ", onChangeCallback: ƒ}
-// cam.position
-// THREE.Vector3 {x: -13.6267388438973, y: 54.18687440973605, z: 67.3112809465422}
 
-    this.glowControl = new THREE.OrbitControls(this.glowCamera);
+    this.glowControl = new THREE.OrbitControls(this.glowCamera, $("#canvas")[0]);
     this.glowControl.autoRotateSpeed = -2;
     this.glowControl.autoRotate = true;
-    // this.glowControl.enabled = false;
-    this.glowControl.target = this.center;
+    this.glowControl.enablePan = false;
+    this.glowControl.enableKeys = false;
+    // this.glowControl.domElement($("#canvas")[0]);
     this.glowControl.update();
-    // Lights
 
+    // Lights
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
     this.mainScene.add(this.ambLight);
 
@@ -513,6 +489,13 @@ class Renderer {
   setupSoundBars(barCount) {
     this.soundBarsContainer = new __WEBPACK_IMPORTED_MODULE_0__sound_bars_container__["a" /* default */]();
     this.soundBarsContainer.createSoundBars(this.mainScene, this.glowScene, barCount);
+    this.setCenter();
+  }
+
+  setCenter() {
+    this.center = new THREE.Vector3(this.soundBarsContainer.getCenterX(), 5, 0);
+    this.glowControl.target = this.center;
+    this.mainControl.target = this.center;
   }
 
   drawData(freqArray) {
@@ -521,20 +504,8 @@ class Renderer {
   }
 
   render () {
-    let x = this.mainCamera.position.x;
-    let z = this.mainCamera.position.z;
-    let delta = 0.005;
-
     this.mainControl.update();
     this.glowControl.update();
-
-    // this.mainCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
-    // this.mainCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    // this.mainCamera.lookAt(this.centexr);
-
-    // this.glowCamera.position.x = x * Math.cos(delta) + z * Math.sin(delta);
-    // this.glowCamera.position.z = z * Math.cos(delta) - x * Math.sin(delta);
-    // this.glowCamera.lookAt(this.center);
 
     this.mainComposer.render();
     this.glowComposer.render();
@@ -554,6 +525,9 @@ class Renderer {
 
 
 
+const ADD_BARS_F = 3;
+const ADD_BARS_B = 7;
+const ADD_BARS_TOTAL = ADD_BARS_F + ADD_BARS_B;
 
 class SoundBarsContainer {
   constructor() {
@@ -561,43 +535,29 @@ class SoundBarsContainer {
   }
 
   createSoundBars(scene, glowScene, barCount) {
-    this.barCount = barCount;
-    for(let i = 0; i < barCount + 6; i++) {
+    this.barCount = barCount + ADD_BARS_TOTAL;
+    this.activeBarCount = barCount;
+    for(let i = 0; i < this.barCount; i++) {
 
       let settings = {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
-        // color: 0x595759,
-        // color: 0x8e8e8e,
         color: 0x636363,
-        // color: 0x565656,
-        // color: 0x777777,
-        // color: 0x54521d,
-        // emissive: 0xa5000b,
         emissive: 0x25c4a7,
-        // emissive: 0x25c4a7,
-        // emissiveIntensity: 0.2,
         emissiveIntensity: 0.1,
         glowColor: 0x009933,
-        glowIntensity: 1,
+        glowOpacity: 1,
         highColor: [209, 2, 171],
         lowColor: [74, 50, 130]
       };
 
       if (i < 35) {
-        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([5, 136, 252], [209, 2, 171], (i)/35);
-        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([26, 73, 27], [74, 50, 130], (i)/35);
+        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([5, 136, 252], [209, 2, 171], (i)/35);
+        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([26, 73, 27], [74, 50, 130], (i)/35);
       } else if (i < 70) {
-        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([209, 2, 171], [5, 136, 252], (i- 35)/35);
-        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["c" /* pickHexArray */])([74, 50, 130], [26, 73, 27], (i- 35)/35);
+        settings.highColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([209, 2, 171], [5, 136, 252], (i- 35)/35);
+        settings.lowColor = Object(__WEBPACK_IMPORTED_MODULE_1__util__["b" /* pickHexArray */])([74, 50, 130], [26, 73, 27], (i- 35)/35);
       }
-
-
-
-
-
-
-      // console.log(glowColor);
 
       let set = [];
 
@@ -633,16 +593,20 @@ class SoundBarsContainer {
       settings.pos[2] = -9;
       set[12] = new __WEBPACK_IMPORTED_MODULE_0__sound_bar__["a" /* default */](settings, scene, glowScene);
 
-
       this.soundBars.push(set);
     }
   }
 
+  getCenterX() {
+    let low = this.soundBars[0][6];
+    let high = this.soundBars[this.soundBars.length-1][6];
+    return (low.x + high.x)/2;
+  }
+
   updateSoundBars(freqArray) {
-    // console.log(Math.max(...freqArray) * 2);
-    for (let i = 0; i < this.barCount; i++){
-      let val = freqArray[i]/2;
-      this.soundBars[i + 3].forEach((bar, ind) => {
+    for (let i = ADD_BARS_F; i < this.barCount - ADD_BARS_B; i++){
+      let val = freqArray[i - ADD_BARS_F]/2;
+      this.soundBars[i].forEach((bar, ind) => {
         if (ind === 6){
           bar.setHeight(val/2);
         } else if (ind === 5 || ind === 7) {
@@ -666,7 +630,7 @@ class SoundBarsContainer {
         }
       });
     }
-    for (let i = 2; i >= 0; i--) {
+    for (let i = ADD_BARS_F - 1; i >= 0; i--) {
       let val = this.soundBars[i + 1][6].height;
       this.soundBars[i].forEach((bar, ind) => {
         if (ind === 6){
@@ -692,8 +656,8 @@ class SoundBarsContainer {
         }
       });
     }
-    for (let i = this.barCount + 3; i <= this.barCount + 5; i++) {
-      let val = this.soundBars[i - 1][6].height;
+    for (let i = this.barCount - ADD_BARS_B; i < this.barCount; i++) {
+      let val = this.soundBars[i - 1][6].height * 1.5;
       this.soundBars[i].forEach((bar, ind) => {
         if (ind === 6){
           bar.setHeight(val/2);
@@ -734,51 +698,12 @@ class SoundBarsContainer {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_js__);
 
 
-const THREE = __WEBPACK_IMPORTED_MODULE_1_three_js___default()([
-  // "SubdivisionModifier",
-  // "EffectComposer",
-  // "ShaderPass",
-  // "RenderPass",
-  // "HorizontalBlurShader",
-  // "VerticalBlurShader",
-  // "CopyShader",
-  // "MaskPass",
-  // "OrbitControls"
-]);
+const THREE = __WEBPACK_IMPORTED_MODULE_1_three_js___default()();
+
 class SoundBar {
   constructor(settings, scene, glowScene) {
     this.settings = settings;
-    // this.geometry = new THREE.BoxGeometry(...settings.scale);
-    // this.geometry = new THREE.CylinderGeometry (0.9, 0.1, 1, 6);
-    // this.geometry = new THREE.CylinderGeometry (0.8, 0.6, 1, 10);
     this.geometry = new THREE.SphereGeometry( 0.6, 10, 10 );
-    // this.geometry = new THREE.IcosahedronGeometry( 1, 0);
-    // this.geometry = new THREE.SphereGeometry( 1, 5, 5 );
-//     var length = 0.25, width = 0.25;
-//
-var shape = new THREE.Shape();
-shape.moveTo( 0,0 );
-shape.lineTo( 0, 0.5 );
-shape.lineTo( 0.5, 0.5 );
-shape.lineTo( 0.5, 0 );
-shape.lineTo( 0, 0 );
-
-var extrudeSettings = {
-	steps: 1,
-	amount: 0.5,
-	bevelEnabled: true,
-	bevelThickness: 0.2,
-	bevelSize: 0.2,
-	bevelSegments: 4
-};
-
-// this.geometry = new THREE.ExtrudeGeometry( shape, extrudeSettings );
-
-    // var SubdivisionModifier = require('three-subdivision-modifier');
-    //
-    // var modifier = new SubdivisionModifier( 2 ); // Number of subdivisions
-    //
-    // modifier.modify( this.geometry );
 
     this.lowColor = settings.lowColor;
     this.highColor = settings.highColor;
@@ -790,53 +715,30 @@ var extrudeSettings = {
     });
     this.mesh = new THREE.Mesh(this.geometry, this.material);
     this.mesh.position.set(...settings.pos);
-    this.mesh.rotation.x += Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* degToRadian */])(90);
+    this.x = this.mesh.position.x;
     scene.add(this.mesh);
-
-    //glow
 
     this.glowMaterial = new THREE.MeshBasicMaterial({
       color: settings.glowColor,
       transparent:true,
-      opacity: settings.glowIntensity
+      opacity: settings.glowOpacity
     });
 
 
     this.glowMesh = new THREE.Mesh(this.geometry, this.glowMaterial);
     this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
     this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
-    this.glowMesh.rotation.x += Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* degToRadian */])(90);
-    // this.glowMesh.scale.set(this.mesh.scale.x + 0.1, this.mesh.scale.y + 0.1, this.mesh.scale.z + 0.1);
-    // this.glowMesh.scale.set(this.mesh.scale * 1.1);
     glowScene.add(this.glowMesh);
 
   }
 
-  // getHeight() {
-  //   return this.mesh.scale.y;
-  // }
-
   setHeight(height) {
     this.height = height;
     let modHeight = Math.max(0, this.height);
-    let color = Object(__WEBPACK_IMPORTED_MODULE_0__util__["b" /* pickHex */])(this.highColor, this.lowColor, modHeight/15);
+    let color = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* pickHex */])(this.highColor, this.lowColor, modHeight/15);
     this.glowMaterial.color.set(color);
-    // this.glowMesh.position.y = modHeight/2 + 0.5;
-    // this.glowMesh.scale.y = modHeight + 1;
     this.mesh.position.y = modHeight;
-    // this.mesh.position.y = this.glowMesh.position.y + (this.glowMesh.scale.y*2)/3;
-    // this.mesh.amount = modHeight + 1;
-    // this.glowMesh.position.y = this.mesh.position.y+ 0.5;
-    // this.glowMesh.position.y = this.mesh.position.y+ 0.5;
-    // this.glowMesh.scale.y = this.mesh.scale.y + 1;
-    // this.glowMesh.position.y = this.mesh.position.y;
-    // this.glowMesh.amount = this.mesh.amount;
-    // this.glowMesh.scale.y = this.mesh.scale.y;
-    // this.glowMesh.scale.y = this.mesh.scale.y;
     this.glowMesh.position.y = this.mesh.position.y;
-    // this.glowMesh.scale.y = modHeight/2;
-    // this.glowMesh.position.set(this.mesh.position.x, this.mesh.position.y, this.mesh.position.z );
-    // this.glowMesh.scale.set(this.mesh.scale.x, this.mesh.scale.y, this.mesh.scale.z);
   }
 }
 

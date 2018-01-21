@@ -4,9 +4,10 @@ class MusicPlayer {
   constructor() {
     this.audio = $(".audio-source")[0];
     this.ctx = new (AudioContext || window.webkitAudioContext)();
+
+    this.audio.volume = 0.1;
+
     this.analyser = this.ctx.createAnalyser();
-
-
     this.analyser.fftSize = 2048;
     this.audioSrc = this.ctx.createMediaElementSource(this.audio);
     this.freqArray = new Float32Array(this.analyser.frequencyBinCount);
@@ -18,9 +19,18 @@ class MusicPlayer {
     this.heightMultiplier = 3;
 
     this.samples = [
-      "sample_music/harderbetterfasterstronger.mp3",
-      "sample_music/Afrojack_Steve_Aoki_ft_Miss_Palmer_-_No_Beef_Official_Music_Video (mp3cut.net).mp3",
-      "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix[Mp3Converter.net].mp3"
+      "sample_music/Afrojack_Steve_Aoki_No_Beef_Clip.mp3",
+      "sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3",
+      "sample_music/ODESZA_-_Say_My_Name.mp3",
+      "sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix.mp3",
+      "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix.mp3",
+      "sample_music/Teemid_-_Crazy_feat_Joie_Tan_Gnarls_Barkely_Cover.mp3",
+      "sample_music/Daft_Punk_-_Harder_Better_Faster_Stronger.mp3",
+      "sample_music/Flight_Facilities_-_Crave_you.mp3",
+      "sample_music/Bruno_Mars_-_Finesse_Remix_Feat_Cardi_B.mp3",
+      "sample_music/Bebe_Rexha_-_Meant_to_Be.mp3",
+      "sample_music/Bebe_Rexha_-_The_Way_I_Are_Dance_With_Somebody.mp3",
+      "sample_music/Chance_The_Rapper_-_Good_Ass_Intro.mp3",
     ];
 
     this.mode = 'paused';
@@ -29,20 +39,14 @@ class MusicPlayer {
     this.flippedMode['play'] = 'paused';
 
     this.fetchHiddenName();
+    // TODO: remove
     this.setupDropzone();
     this.addListeners();
 
     this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-
-
-
   }
 
-  processData(file) {
-    let x = 1;
-    return `/file-upload`;
-  }
-
+  // TODO: remove
   setupDropzone() {
     $(".dropzone").on({
       dragstart: () => {
@@ -91,35 +95,14 @@ class MusicPlayer {
     }
   }
 
-
-
   setRenderer(renderer) {
     this.renderer = renderer;
     this.renderer.setupSoundBars(this.barCount);
   }
 
-  addBars() { // This is Test Function, this will move somewhere else
-    let tempArray = [];
-    for (let i = 0; i < this.barCount ; i++){
-      tempArray.push($(`<div class="testDivs ${i}"></div>`));
-    }
-    tempArray.forEach(div => {
-      $(".test").append(div);
-    });
-  }
-
   renderLoop() {
     this.renderer.drawData(this.processFreqArray());
     this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-  }
-
-  shuffleArray(array) {
-    for (var i = array.length - 1; i > 0; i--) {
-        var j = Math.floor(Math.random() * (i + 1));
-        var temp = array[i];
-        array[i] = array[j];
-        array[j] = temp;
-      }
   }
 
   processFreqArray() {
@@ -128,9 +111,7 @@ class MusicPlayer {
 
     for (let i = 0; i<this.barCount ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      // console.log(val);
       let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
-      // let curveIntensity = 2;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
@@ -140,10 +121,19 @@ class MusicPlayer {
 
   addListeners() {
     $(".play-button").click(this.togglePlay.bind(this));
-    // $(document).on(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
     $(".sample.1").click(this.switchSongs(1));
     $(".sample.2").click(this.switchSongs(2));
     $(".sample.3").click(this.switchSongs(3));
+    $(".sample.4").click(this.switchSongs(4));
+    $(".sample.5").click(this.switchSongs(5));
+    $(".sample.6").click(this.switchSongs(6));
+    $(".sample.7").click(this.switchSongs(7));
+    $(".sample.8").click(this.switchSongs(8));
+    $(".sample.9").click(this.switchSongs(9));
+    $(".sample.10").click(this.switchSongs(10));
+    $(".sample.11").click(this.switchSongs(11));
+    $(".sample.12").click(this.switchSongs(12));
+    $(".slider").change(e => (this.audio.volume = e.target.value/100));
     document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
   }
 
@@ -153,13 +143,11 @@ class MusicPlayer {
         this.mode = this.flippedMode[this.mode];
         this.audio.pause();
         $(".play-button img").attr("src", "images/circular-play-button.svg");
-        // clearTimeout(this.timeoutId);
         break;
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
         $(".play-button img").attr("src", "images/circular-pause-button.svg");
-        // this.timeoutId = setTimeout(this.renderLoop.bind(this), 16); // timeout enables Soundbar Visuals
         break;
     }
   }

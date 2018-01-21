@@ -5,57 +5,67 @@
     <title>Music Visualizer</title>
     <link rel='stylesheet' type='text/css' href='css/reset.css'>
     <link rel='stylesheet' type='text/css' href='css/index.css'>
-    <link href="https://fonts.googleapis.com/css?family=Gloria+Hallelujah" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <script src="https://threejs.org/build/three.min.js"></script>
     <script src='https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js'></script>
     <script src='./javascript/bundle.js'></script>
   </head>
   <body>
-    <!-- <h1>Music Visualizer</h1> -->
-    <div class="music-player">
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/PopCulture.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Madeon_-_Pop_Culture_Audio_HQ_1080p[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Flight_Facilities_-_Crave_you_feat_Giselle_Official_Video[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Shawn_Wasabi_-_Marble_Soda_Original_Song[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Xan Griffin - Scorpio.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Daft_Punk_-_Get_Lucky.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Drop_Out.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Stairway_to_Heaven_guitar_solo_cover_-_Sean_Boothe[Mp3Converter.net].mp3"></audio> -->
-      <audio class="audio-source" crossorigin="anonymous" src="sample_music/harderbetterfasterstronger.mp3"></audio>
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/aftergold.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/lul.mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/GetLucky.m4a"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Daft_Punk_-_Something_About_Us_Official_audio[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Kygo_ft_Parson_James_-_Stole_the_show_Lyrics_video[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/The_Weeknd_-_I_Feel_It_Coming_ft_Daft_Punk[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Seven_Lions_-_Freesol_feat_Skyler_Stonestreet[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Afrojack_Steve_Aoki_ft_Miss_Palmer_-_No_Beef_Official_Music_Video[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Afrojack_Steve_Aoki_ft_Miss_Palmer_-_No_Beef_Official_Music_Video (mp3cut.net).mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Mansionair_-_Hold_Me_Down[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix[Mp3Converter.net].mp3"></audio> -->
-      <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/ODESZA_-_Say_My_Name_feat_Zyra_-_Lyric_Video[Mp3Converter.net].mp3"></audio> -->
-      <div class="play-button">
-        <img src="images/circular-play-button.svg" alt="">
-      </div>
-      <div class="sample-songs">
-        <div class="sample 1">
-          Sample 1
+    <h1>Music Visualizer</h1>
+    <div class="content-holder">
+      <div class="music-player">
+        <audio class="audio-source" crossorigin="anonymous" src="sample_music/Afrojack_Steve_Aoki_No_Beef_Clip.mp3"></audio>
+        <div class="controls">
+          <div class="play-button">
+            <img src="images/circular-play-button.svg" alt="">
+          </div>
+          <div class="slidecontainer">
+            <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+          </div>
         </div>
-        <div class="sample 2">
-          Sample 2
-        </div>
-        <div class="sample 3">
-          Sample 3
+        <div class="sample-songs">
+          <div class="sample 1">
+            Afrojack Steve Aoki - No Beef (clip)
+          </div>
+          <div class="sample 2">
+            Breakers Break - Daft Punk Mash-up
+          </div>
+          <div class="sample 3">
+            ODESZA - Say My Name
+          </div>
+          <div class="sample 4">
+            Oh Wonder - Body Gold
+          </div>
+          <div class="sample 5">
+            Ed Sheeran - I See Fire (Kygo Remix)
+          </div>
+          <div class="sample 6">
+            Joie Tan - Crazy (Cover)
+          </div>
+          <div class="sample 7">
+            Daft Punk - Harder Better Faster Stronger
+          </div>
+          <div class="sample 8">
+            Flight Fecilities - Crave You
+          </div>
+          <div class="sample 9">
+            Bruno Mars - Finesse Remix (feat Cardi B)
+          </div>
+          <div class="sample 10">
+            Bebe Rexha - Meant to Be
+          </div>
+          <div class="sample 11">
+            Bebe Rexha - The Way I Are
+          </div>
+          <div class="sample 12">
+            Chance The Rapper - Good Ass Intro
+          </div>
         </div>
       </div>
-      <!-- <form action='/file-upload' class='dropzone' id='music-dropzone'> -->
-        <!-- <input name="file" type="file"/> -->
-      <!-- </form> -->
-      <div action='/response.html' class='dropzone' id="dropzone">
-        Drop Music Here!
-      </div>
+      <canvas id='canvas'></canvas>
     </div>
-    <canvas id='canvas'></canvas>
+    <!-- <div action='/response.html' class='dropzone' id="dropzone">
+      Drop Music Here!
+    </div> -->
   </body>
 </html>
