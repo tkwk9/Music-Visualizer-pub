@@ -23,19 +23,15 @@ class Renderer {
 
     this.bluriness = 2;
 
-    // this.cameraPosition = [-5.505498417206258, 29.86307067902552, 52.82251936660209];
-    // this.cameraPosition = [100.38658021594671, 53.43372770100428, -111.97734413394056];
-    // this.cameraPosition = [125.23732204574198, 32.549108785623254, 3.073917311006665];
-    this.cameraPosition = [145.34747497479822, 32.495897120091016, 27.26094794351393];
-    this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
+    this.cameraPosition = [0, 53.425430779914635, 94.11947595110834];
+    // this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
 
-    // this.renderer.setClearColor(0x000000);
     this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1150;
-    this.height = 600;
-    this.renderer.setSize(this.width, this.height);
+    const WIDTH = 800;
+    const HEIGHT = 500;
+    this.renderer.setSize(WIDTH, HEIGHT);
 
     // Scene Setup
     this.mainScene = new THREE.Scene();
@@ -45,24 +41,24 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
-    this.mainCamera.rotation.set(...this.cameraRotation);
+    // this.mainCamera.rotation.set(...this.cameraRotation);
     // this.mainCamera.lookAt(this.center);
 
     this.mainControl = new THREE.OrbitControls(this.mainCamera);
     this.mainControl.autoRotateSpeed = -2;
     this.mainControl.autoRotate = true;
-    this.mainControl.enabled = false;
+    // this.mainControl.enabled = false;
     this.mainControl.target = this.center;
     this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    this.glowCamera.rotation.set(...this.cameraRotation);
+    // this.glowCamera.rotation.set(...this.cameraRotation);
     // this.glowCamera.lookAt(this.center);
     // cam.rotation
 // THREE.Euler {_x: -0.5063199752210983, _y: -0.48896218068469827, _z: -0.2548097566813358, _order: "XYZ", onChangeCallback: ƒ}
@@ -72,7 +68,7 @@ class Renderer {
     this.glowControl = new THREE.OrbitControls(this.glowCamera);
     this.glowControl.autoRotateSpeed = -2;
     this.glowControl.autoRotate = true;
-    this.glowControl.enabled = false;
+    // this.glowControl.enabled = false;
     this.glowControl.target = this.center;
     this.glowControl.update();
     // Lights
@@ -102,8 +98,8 @@ class Renderer {
       stencilBufer: false
     };
     this.renderTarget = new THREE.WebGLRenderTarget(
-                          this.width,
-                          this.height,
+                          WIDTH,
+                          HEIGHT,
                           renderTargetParameters
                         );
 
@@ -118,8 +114,8 @@ class Renderer {
     this.vblur = new THREE.ShaderPass(THREE.VerticalBlurShader);
 
 
-    this.hblur.uniforms["h"].value = this.bluriness/this.width;
-    this.vblur.uniforms["v"].value = this.bluriness/this.height;
+    this.hblur.uniforms["h"].value = this.bluriness/WIDTH;
+    this.vblur.uniforms["v"].value = this.bluriness/HEIGHT;
     this.glowComposer.addPass(this.hblur);
     this.glowComposer.addPass(this.vblur);
 

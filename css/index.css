@@ -1,13 +1,11 @@
-
 body {
   display: flex;
   flex-wrap: wrap;
-  background: black;
+  background: blue;
 }
 
 .music-player {
   width: 200px;
-  /* height: 500px; */
   box-sizing: border-box;
   padding: 20px;
 
@@ -42,16 +40,11 @@ body {
 .dropzone {
   width: 150px;
   height: 150px;
-  /* line-height: 150px;
-  text-align: center;
-  vertical-align: middle; */
   border: 1px solid black;
 }
 .dropzone input{
-  /* line-height: 150px; */
   text-align: center;
   vertical-align: middle;
-  /* border: 1px solid black; */
 }
 
 #canvas {
@@ -60,7 +53,6 @@ body {
   bottom: 0;
   right: 0;
   z-index: -1
-  /* border: 1px solid red; */
 }
 
 .test {

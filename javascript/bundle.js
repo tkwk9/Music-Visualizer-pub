@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -68,9 +68,86 @@
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+const pickHex = (color1, color2, weight) => {
+    let w1 = weight;
+    let w2 = 1 - w1;
+    let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+        Math.round(color1[1] * w1 + color2[1] * w2),
+        Math.round(color1[2] * w1 + color2[2] * w2)];
+    return `rgb(${Math.max(0,rgb[0])}, ${Math.max(0,rgb[1])}, ${Math.max(0,rgb[2])})`;
+};
+/* harmony export (immutable) */ __webpack_exports__["b"] = pickHex;
+
+const pickHexArray = (color1, color2, weight) => {
+    let w1 = weight;
+    let w2 = 1 - w1;
+    let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
+        Math.round(color1[1] * w1 + color2[1] * w2),
+        Math.round(color1[2] * w1 + color2[2] * w2)];
+    return [Math.max(0,rgb[0]), Math.max(0,rgb[1]), Math.max(0,rgb[2])];
+};
+/* harmony export (immutable) */ __webpack_exports__["c"] = pickHexArray;
+
+
+const degToRadian = (deg) => {
+    return deg * Math.PI/180;
+};
+/* harmony export (immutable) */ __webpack_exports__["a"] = degToRadian;
+
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+(function( self ){
+
+	var THREE = __webpack_require__(7);
+
+	module.exports = function( addons ){
+
+		if( addons instanceof Array ){
+
+			for( var addonIndex = 0, length = addons.length; addonIndex < length; addonIndex++ ){
+				
+				var addon = addons[addonIndex];
+				
+				if( addon instanceof Function ){
+
+					addon(THREE);
+
+				}
+				else if( typeof addon === "string" ){
+
+					__webpack_require__(10)("./" + addon + ".js")(THREE);
+
+				}
+				else {
+
+					throw new Error("Invalid module type provided");
+
+				};
+				
+			};
+
+		};
+
+		return THREE;
+
+	};
+
+})(this || {});
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__music_player__ = __webpack_require__(1);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__renderer__ = __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__music_player__ = __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__renderer__ = __webpack_require__(4);
+
 
 
 // import Dropzone from "./external_packages/dropzone";
@@ -86,7 +163,7 @@ $( () => {
 
 
 /***/ }),
-/* 1 */
+/* 3 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -289,14 +366,14 @@ class MusicPlayer {
 
 
 /***/ }),
-/* 2 */
+/* 4 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound_bars_container__ = __webpack_require__(4);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shaders_additive_blend_shader__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound_bars_container__ = __webpack_require__(5);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__shaders_additive_blend_shader__ = __webpack_require__(71);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_three_js__);
 
 
@@ -323,19 +400,15 @@ class Renderer {
 
     this.bluriness = 2;
 
-    // this.cameraPosition = [-5.505498417206258, 29.86307067902552, 52.82251936660209];
-    // this.cameraPosition = [100.38658021594671, 53.43372770100428, -111.97734413394056];
-    // this.cameraPosition = [125.23732204574198, 32.549108785623254, 3.073917311006665];
-    this.cameraPosition = [145.34747497479822, 32.495897120091016, 27.26094794351393];
-    this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
+    this.cameraPosition = [0, 53.425430779914635, 94.11947595110834];
+    // this.cameraRotation = [-0.44401691456761755, -0.6001625199097192, -0.2624648358976857];
 
-    // this.renderer.setClearColor(0x000000);
     this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
 
-    this.width = 1150;
-    this.height = 600;
-    this.renderer.setSize(this.width, this.height);
+    const WIDTH = 800;
+    const HEIGHT = 500;
+    this.renderer.setSize(WIDTH, HEIGHT);
 
     // Scene Setup
     this.mainScene = new THREE.Scene();
@@ -345,24 +418,24 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
-    this.mainCamera.rotation.set(...this.cameraRotation);
+    // this.mainCamera.rotation.set(...this.cameraRotation);
     // this.mainCamera.lookAt(this.center);
 
     this.mainControl = new THREE.OrbitControls(this.mainCamera);
     this.mainControl.autoRotateSpeed = -2;
     this.mainControl.autoRotate = true;
-    this.mainControl.enabled = false;
+    // this.mainControl.enabled = false;
     this.mainControl.target = this.center;
     this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(40, this.width/this.height, 0.1, 3000);
+      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
-    this.glowCamera.rotation.set(...this.cameraRotation);
+    // this.glowCamera.rotation.set(...this.cameraRotation);
     // this.glowCamera.lookAt(this.center);
     // cam.rotation
 // THREE.Euler {_x: -0.5063199752210983, _y: -0.48896218068469827, _z: -0.2548097566813358, _order: "XYZ", onChangeCallback: ƒ}
@@ -372,7 +445,7 @@ class Renderer {
     this.glowControl = new THREE.OrbitControls(this.glowCamera);
     this.glowControl.autoRotateSpeed = -2;
     this.glowControl.autoRotate = true;
-    this.glowControl.enabled = false;
+    // this.glowControl.enabled = false;
     this.glowControl.target = this.center;
     this.glowControl.update();
     // Lights
@@ -402,8 +475,8 @@ class Renderer {
       stencilBufer: false
     };
     this.renderTarget = new THREE.WebGLRenderTarget(
-                          this.width,
-                          this.height,
+                          WIDTH,
+                          HEIGHT,
                           renderTargetParameters
                         );
 
@@ -418,8 +491,8 @@ class Renderer {
     this.vblur = new THREE.ShaderPass(THREE.VerticalBlurShader);
 
 
-    this.hblur.uniforms["h"].value = this.bluriness/this.width;
-    this.vblur.uniforms["v"].value = this.bluriness/this.height;
+    this.hblur.uniforms["h"].value = this.bluriness/WIDTH;
+    this.vblur.uniforms["v"].value = this.bluriness/HEIGHT;
     this.glowComposer.addPass(this.hblur);
     this.glowComposer.addPass(this.vblur);
 
@@ -472,13 +545,12 @@ class Renderer {
 
 
 /***/ }),
-/* 3 */,
-/* 4 */
+/* 5 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound_bar__ = __webpack_require__(5);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(80);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__sound_bar__ = __webpack_require__(6);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util__ = __webpack_require__(0);
 
 
 
@@ -653,12 +725,12 @@ class SoundBarsContainer {
 
 
 /***/ }),
-/* 5 */
+/* 6 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(80);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js__ = __webpack_require__(14);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__util__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_three_js___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_three_js__);
 
 
@@ -772,58 +844,7 @@ var extrudeSettings = {
 
 
 /***/ }),
-/* 6 */,
-/* 7 */,
-/* 8 */,
-/* 9 */,
-/* 10 */,
-/* 11 */,
-/* 12 */,
-/* 13 */,
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
-
-(function( self ){
-
-	var THREE = __webpack_require__(15);
-
-	module.exports = function( addons ){
-
-		if( addons instanceof Array ){
-
-			for( var addonIndex = 0, length = addons.length; addonIndex < length; addonIndex++ ){
-				
-				var addon = addons[addonIndex];
-				
-				if( addon instanceof Function ){
-
-					addon(THREE);
-
-				}
-				else if( typeof addon === "string" ){
-
-					__webpack_require__(18)("./" + addon + ".js")(THREE);
-
-				}
-				else {
-
-					throw new Error("Invalid module type provided");
-
-				};
-				
-			};
-
-		};
-
-		return THREE;
-
-	};
-
-})(this || {});
-
-
-/***/ }),
-/* 15 */
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var __WEBPACK_AMD_DEFINE_RESULT__;(function( self ){
@@ -42575,7 +42596,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function( self ){
 
 	};
 
-	if( "function" !== "undefined" && __webpack_require__(16) instanceof Function && __webpack_require__(17) != undefined ){
+	if( "function" !== "undefined" && __webpack_require__(8) instanceof Function && __webpack_require__(9) != undefined ){
 
 		!(__WEBPACK_AMD_DEFINE_RESULT__ = function(){
 
@@ -42599,7 +42620,7 @@ var __WEBPACK_AMD_DEFINE_RESULT__;(function( self ){
 })(this || {});
 
 /***/ }),
-/* 16 */
+/* 8 */
 /***/ (function(module, exports) {
 
 module.exports = function() {
@@ -42608,7 +42629,7 @@ module.exports = function() {
 
 
 /***/ }),
-/* 17 */
+/* 9 */
 /***/ (function(module, exports) {
 
 /* WEBPACK VAR INJECTION */(function(__webpack_amd_options__) {/* globals __webpack_amd_options__ */
@@ -42617,70 +42638,70 @@ module.exports = __webpack_amd_options__;
 /* WEBPACK VAR INJECTION */}.call(exports, {}))
 
 /***/ }),
-/* 18 */
+/* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
-	"./AdaptiveToneMappingPass.js": 19,
-	"./BasicShader.js": 20,
-	"./BleachBypassShader.js": 21,
-	"./BlendShader.js": 22,
-	"./BloomPass.js": 23,
-	"./BokehPass.js": 24,
-	"./BokehShader.js": 25,
-	"./BokehShader2.js": 26,
-	"./BrightnessContrastShader.js": 27,
-	"./CanvasRenderer.js": 28,
-	"./ColorCorrectionShader.js": 29,
-	"./ColorifyShader.js": 30,
-	"./ConvolutionShader.js": 31,
-	"./CopyShader.js": 32,
-	"./DDSLoader.js": 33,
-	"./DOFMipMapShader.js": 34,
-	"./DigitalGlitch.js": 35,
-	"./DotScreenPass.js": 36,
-	"./DotScreenShader.js": 37,
-	"./EdgeShader.js": 38,
-	"./EdgeShader2.js": 39,
-	"./EffectComposer.js": 40,
-	"./FXAAShader.js": 41,
-	"./FilmPass.js": 42,
-	"./FilmShader.js": 43,
-	"./FocusShader.js": 44,
-	"./FresnelShader.js": 45,
-	"./GammaCorrectionShader.js": 46,
-	"./GlitchPass.js": 47,
-	"./HorizontalBlurShader.js": 48,
-	"./HorizontalTiltShiftShader.js": 49,
-	"./HueSaturationShader.js": 50,
-	"./JSONLoader.js": 51,
-	"./KaleidoShader.js": 52,
-	"./LuminosityShader.js": 53,
-	"./MTLLoader.js": 54,
-	"./MarchingCubes.js": 55,
-	"./MaskPass.js": 56,
-	"./MirrorShader.js": 57,
-	"./NormalMapShader.js": 58,
-	"./OBJLoader.js": 59,
-	"./OceanShaders.js": 60,
-	"./OrbitControls.js": 61,
-	"./ParallaxShader.js": 62,
-	"./Projector.js": 63,
-	"./RGBShiftShader.js": 64,
-	"./RenderPass.js": 65,
-	"./SSAOShader.js": 66,
-	"./SVGLoader.js": 67,
-	"./SavePass.js": 68,
-	"./SepiaShader.js": 69,
-	"./ShaderPass.js": 70,
-	"./TechnicolorShader.js": 71,
-	"./TexturePass.js": 72,
-	"./ToneMapShader.js": 73,
-	"./TriangleBlurShader.js": 74,
-	"./UnpackDepthRGBAShader.js": 75,
-	"./VerticalBlurShader.js": 76,
-	"./VerticalTiltShiftShader.js": 77,
-	"./VignetteShader.js": 78
+	"./AdaptiveToneMappingPass.js": 11,
+	"./BasicShader.js": 12,
+	"./BleachBypassShader.js": 13,
+	"./BlendShader.js": 14,
+	"./BloomPass.js": 15,
+	"./BokehPass.js": 16,
+	"./BokehShader.js": 17,
+	"./BokehShader2.js": 18,
+	"./BrightnessContrastShader.js": 19,
+	"./CanvasRenderer.js": 20,
+	"./ColorCorrectionShader.js": 21,
+	"./ColorifyShader.js": 22,
+	"./ConvolutionShader.js": 23,
+	"./CopyShader.js": 24,
+	"./DDSLoader.js": 25,
+	"./DOFMipMapShader.js": 26,
+	"./DigitalGlitch.js": 27,
+	"./DotScreenPass.js": 28,
+	"./DotScreenShader.js": 29,
+	"./EdgeShader.js": 30,
+	"./EdgeShader2.js": 31,
+	"./EffectComposer.js": 32,
+	"./FXAAShader.js": 33,
+	"./FilmPass.js": 34,
+	"./FilmShader.js": 35,
+	"./FocusShader.js": 36,
+	"./FresnelShader.js": 37,
+	"./GammaCorrectionShader.js": 38,
+	"./GlitchPass.js": 39,
+	"./HorizontalBlurShader.js": 40,
+	"./HorizontalTiltShiftShader.js": 41,
+	"./HueSaturationShader.js": 42,
+	"./JSONLoader.js": 43,
+	"./KaleidoShader.js": 44,
+	"./LuminosityShader.js": 45,
+	"./MTLLoader.js": 46,
+	"./MarchingCubes.js": 47,
+	"./MaskPass.js": 48,
+	"./MirrorShader.js": 49,
+	"./NormalMapShader.js": 50,
+	"./OBJLoader.js": 51,
+	"./OceanShaders.js": 52,
+	"./OrbitControls.js": 53,
+	"./ParallaxShader.js": 54,
+	"./Projector.js": 55,
+	"./RGBShiftShader.js": 56,
+	"./RenderPass.js": 57,
+	"./SSAOShader.js": 58,
+	"./SVGLoader.js": 59,
+	"./SavePass.js": 60,
+	"./SepiaShader.js": 61,
+	"./ShaderPass.js": 62,
+	"./TechnicolorShader.js": 63,
+	"./TexturePass.js": 64,
+	"./ToneMapShader.js": 65,
+	"./TriangleBlurShader.js": 66,
+	"./UnpackDepthRGBAShader.js": 67,
+	"./VerticalBlurShader.js": 68,
+	"./VerticalTiltShiftShader.js": 69,
+	"./VignetteShader.js": 70
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -42696,10 +42717,10 @@ webpackContext.keys = function webpackContextKeys() {
 };
 webpackContext.resolve = webpackContextResolve;
 module.exports = webpackContext;
-webpackContext.id = 18;
+webpackContext.id = 10;
 
 /***/ }),
-/* 19 */
+/* 11 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43024,7 +43045,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 20 */
+/* 12 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43064,7 +43085,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 21 */
+/* 13 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43137,7 +43158,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 22 */
+/* 14 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43196,7 +43217,7 @@ module.exports = function( THREE ){
 }
 
 /***/ }),
-/* 23 */
+/* 15 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43321,7 +43342,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 24 */
+/* 16 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43433,7 +43454,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 25 */
+/* 17 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43558,7 +43579,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 26 */
+/* 18 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -43937,7 +43958,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 27 */
+/* 19 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -44004,7 +44025,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 28 */
+/* 20 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45127,7 +45148,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 29 */
+/* 21 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45186,7 +45207,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 30 */
+/* 22 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45244,7 +45265,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 31 */
+/* 23 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45354,7 +45375,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 32 */
+/* 24 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45409,7 +45430,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 33 */
+/* 25 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45687,7 +45708,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 34 */
+/* 26 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45754,7 +45775,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 35 */
+/* 27 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45866,7 +45887,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 36 */
+/* 28 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -45936,7 +45957,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 37 */
+/* 29 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46013,7 +46034,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 38 */
+/* 30 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46115,7 +46136,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 39 */
+/* 31 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46197,7 +46218,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 40 */
+/* 32 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46344,7 +46365,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 41 */
+/* 33 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46372,7 +46393,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 42 */
+/* 34 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46443,7 +46464,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 43 */
+/* 35 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46556,7 +46577,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 44 */
+/* 36 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46656,7 +46677,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 45 */
+/* 37 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46739,7 +46760,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 46 */
+/* 38 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46798,7 +46819,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 47 */
+/* 39 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46920,7 +46941,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 48 */
+/* 40 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -46991,7 +47012,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 49 */
+/* 41 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -47065,7 +47086,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 50 */
+/* 42 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -47143,7 +47164,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 51 */
+/* 43 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -47707,7 +47728,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 52 */
+/* 44 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -47776,7 +47797,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 53 */
+/* 45 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -47835,7 +47856,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 54 */
+/* 46 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -48261,7 +48282,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 55 */
+/* 47 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -49327,7 +49348,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 56 */
+/* 48 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -49423,7 +49444,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 57 */
+/* 49 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -49490,7 +49511,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 58 */
+/* 50 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -49552,7 +49573,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 59 */
+/* 51 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -49964,7 +49985,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 60 */
+/* 52 */
 /***/ (function(module, exports) {
 
 ﻿module.exports = function( THREE ){
@@ -50361,7 +50382,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 61 */
+/* 53 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -51407,7 +51428,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 62 */
+/* 54 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -51600,7 +51621,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 63 */
+/* 55 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -52530,7 +52551,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 64 */
+/* 56 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -52595,7 +52616,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 65 */
+/* 57 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -52655,7 +52676,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 66 */
+/* 58 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -52889,7 +52910,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 67 */
+/* 59 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -52931,7 +52952,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 68 */
+/* 60 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53003,7 +53024,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 69 */
+/* 61 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53066,7 +53087,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 70 */
+/* 62 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53135,7 +53156,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 71 */
+/* 63 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53191,7 +53212,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 72 */
+/* 64 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53247,7 +53268,7 @@ module.exports = function( THREE ){
 };
 
 /***/ }),
-/* 73 */
+/* 65 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53331,7 +53352,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 74 */
+/* 66 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53418,7 +53439,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 75 */
+/* 67 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53484,7 +53505,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 76 */
+/* 68 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53555,7 +53576,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 77 */
+/* 69 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53629,7 +53650,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 78 */
+/* 70 */
 /***/ (function(module, exports) {
 
 module.exports = function( THREE ){
@@ -53701,7 +53722,7 @@ module.exports = function( THREE ){
 
 
 /***/ }),
-/* 79 */
+/* 71 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -53741,39 +53762,6 @@ module.exports = function( THREE ){
 
 	].join("\n")
 });
-
-
-/***/ }),
-/* 80 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-const pickHex = (color1, color2, weight) => {
-    let w1 = weight;
-    let w2 = 1 - w1;
-    let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-        Math.round(color1[1] * w1 + color2[1] * w2),
-        Math.round(color1[2] * w1 + color2[2] * w2)];
-    return `rgb(${Math.max(0,rgb[0])}, ${Math.max(0,rgb[1])}, ${Math.max(0,rgb[2])})`;
-};
-/* harmony export (immutable) */ __webpack_exports__["b"] = pickHex;
-
-const pickHexArray = (color1, color2, weight) => {
-    let w1 = weight;
-    let w2 = 1 - w1;
-    let rgb = [Math.round(color1[0] * w1 + color2[0] * w2),
-        Math.round(color1[1] * w1 + color2[1] * w2),
-        Math.round(color1[2] * w1 + color2[2] * w2)];
-    return [Math.max(0,rgb[0]), Math.max(0,rgb[1]), Math.max(0,rgb[2])];
-};
-/* harmony export (immutable) */ __webpack_exports__["c"] = pickHexArray;
-
-
-const degToRadian = (deg) => {
-    return deg * Math.PI/180;
-};
-/* harmony export (immutable) */ __webpack_exports__["a"] = degToRadian;
-
 
 
 /***/ })
