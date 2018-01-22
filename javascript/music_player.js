@@ -3,7 +3,12 @@
 class MusicPlayer {
   constructor() {
     this.audio = $(".audio-source")[0];
-    this.ctx = new (AudioContext || window.webkitAudioContext)();
+    try {
+      this.ctx = new (AudioContext || window.webkitAudioContext)();
+    }
+    catch (e) {
+      this.ctx = new  window.webkitAudioContext();
+    }
 
     this.audio.volume = 0.5;
     this.currentTrack = 1;
