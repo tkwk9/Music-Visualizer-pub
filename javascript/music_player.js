@@ -160,15 +160,14 @@ class MusicPlayer {
       case 'play':
         this.mode = this.flippedMode[this.mode];
         this.audio.pause();
-        $(".play-button img").attr("src", "images/play-button.svg");
+        $(".play-btn").removeClass("hidden");
+        $(".pause-btn").addClass("hidden");
         break;
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
-        // $(".play-button").empty();
-        //
-        // ))
-        $(".play-button img").attr("src", "images/pause.svg");
+        $(".play-btn").addClass("hidden");
+        $(".pause-btn").removeClass("hidden");
         break;
     }
   }

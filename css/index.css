@@ -3,7 +3,8 @@ h1 {
   color: #d4ead0;
   font-size: 50px;
   text-align: center;
-  margin-bottom: 50px;
+  margin-bottom: 50px ;
+  margin-top: 50px ;
 }
 
 body {
@@ -44,7 +45,7 @@ body {
 
 .music-player {
   width: 400px;
-  height: 500px;
+  height: 100%;
   box-sizing: border-box;
   /* border-radius: 10px; */
   /* padding: 20px; */
@@ -105,9 +106,18 @@ body {
   width: 32px;
   height: 32px;
   margin: 5px;
+  transition: all 0.2s linear;
 }
+
 .ff-button:hover, .rewind-button:hover {
   cursor: pointer;
+}
+
+.ff-button:hover svg path, .rewind-button:hover  svg path{
+  fill: #b497ed;
+}
+.ff-button svg path, .rewind-button  svg path{
+  transition: all 0.2s linear;
 }
 
 .ff-button img, .rewind-button img{
@@ -124,6 +134,21 @@ body {
 .play-button:hover {
   cursor: pointer;
 }
+
+.play-button:hover svg path{
+  fill: #b497ed;
+}
+.play-button svg path{
+  transition: fill 0.2s linear;
+}
+.play-button svg{
+  visibility: visible;
+}
+
+.play-button .hidden {
+  visibility: hidden;
+}
+
 .play-button img{
   width: 64px;
   height: 64px;
@@ -131,7 +156,7 @@ body {
 
 .sample-songs {
   width: 95%;
-  height: 75%;
+  height: calc(100% - 115px);
   border-radius: 7px;
   overflow-y: scroll;
   /* border-top: 1px solid #d4ead0;
@@ -188,7 +213,7 @@ body {
 .dropzone {
   width: 150px;
   height: 150px;
-  /* border: 1px solid white; */
+  /* border: 1px solid red; */
 }
 
 .direction {
