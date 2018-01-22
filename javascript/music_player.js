@@ -23,6 +23,7 @@ class MusicPlayer {
     this.audioSrc.connect(this.ctx.destination);
 
     this.barCount = 64;
+    this.start = 0;
     this.heightMultiplier = 3;
 
     this.samples = [
@@ -116,9 +117,9 @@ class MusicPlayer {
     this.analyser.getFloatFrequencyData(this.freqArray);
     let tempArray = [];
 
-    for (let i = 0; i<this.barCount ; i++) {
+    for (let i = this.start; i<this.barCount + this.start ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      let curveIntensity = (this.barCount - 1 - i) * (3/(this.barCount - 1)) + 1;
+      let curveIntensity = (this.barCount + this.start - 1 - i) * (3/(this.barCount + this.start - 1)) + 1;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
