@@ -199,16 +199,16 @@ class MusicPlayer {
       "sample_music/ODESZA_-_Say_My_Name.mp3",
       "sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix.mp3",
       "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix.mp3",
-      "sample_music/Teemid_-_Crazy_feat_Joie_Tan_Gnarls_Barkely_Cover.mp3",
+      "sample_music/Post_Malone_-_I_Fall_Apart.mp3",
       "sample_music/Daft_Punk_-_Harder_Better_Faster_Stronger.mp3",
-      "sample_music/Flight_Facilities_-_Crave_you.mp3",
+      "sample_music/Imagine_Dragons_-_Thunder_Audio.mp3",
       "sample_music/Bruno_Mars_-_Finesse_Remix_Feat_Cardi_B.mp3",
       "sample_music/Bebe_Rexha_-_Meant_to_Be.mp3",
-      "sample_music/Bebe_Rexha_-_The_Way_I_Are_Dance_With_Somebody.mp3",
-      "sample_music/Chance_The_Rapper_-_Good_Ass_Intro.mp3",
+      "sample_music/Teemid_-_Crazy_feat_Joie_Tan_Gnarls_Barkely_Cover.mp3",
+      "sample_music/Kygo_ft_Parson_James_-_Stole_the_show.mp3",
     ];
 
-    this.mode = 'paused';
+    this.mode = 'play';
     this.flippedMode = {};
     this.flippedMode['paused'] = 'play';
     this.flippedMode['play'] = 'paused';
