@@ -11,7 +11,7 @@ class MusicPlayer {
     }
 
     this.audio.volume = 0.5;
-    this.currentTrack = 1;
+    this.currentTrack = 2;
 
 
     this.analyser = this.ctx.createAnalyser();
@@ -164,6 +164,9 @@ class MusicPlayer {
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
+        // $(".play-button").empty();
+        //
+        // ))
         $(".play-button img").attr("src", "images/pause.svg");
         break;
     }

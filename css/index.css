@@ -61,7 +61,7 @@ body {
     appearance: none;
     width: 100%;
     height: 5px;
-    background: #d3d3d3;
+    background: #d4ead0;
     outline: none;
     opacity: 0.7;
     -webkit-transition: .2s;
@@ -79,14 +79,14 @@ body {
     appearance: none;
     width: 15px;
     height: 15px;
-    background: #afafaf;
+    background: #b497ed;
     cursor: pointer;
 }
 
 .slider::-moz-range-thumb {
     width: 15px;
     height: 15px;
-    background: #afafaf;
+    background: #b497ed;
     cursor: pointer;
 }
 
@@ -128,27 +128,35 @@ body {
   height: 75%;
   border-radius: 7px;
   overflow-y: scroll;
-  border: 1px solid lightgray;
+  border-top: 1px solid #d4ead0;
+  border-left: 1px solid #d4ead0;
+  border-bottom: 1px solid #d4ead0;
+  /* border: 1px solid #d4ead0; */
 }
 
 .sample {
   width: 90%;
   height: 50px;
-  color: lightgray;
+  color: #d4ead0;
   line-height: 50px;
   border-radius: 5px;
   text-align: center;
   vertical-align: middle;
-  border: 1px solid lightgray;
+  border: 1px solid #d4ead0;
   margin: 10px auto;
+  color: #d4ead0;
+  transition: all 0.2s linear;
 }
 .sample.playing {
-  font-weight: 700;
+  /* font-weight: 400; */
+  color: #b497ed;
+  /* line-height: 48px; */
+  border: 1px solid #b497ed;
 }
 .sample:hover {
   cursor: pointer;
-  line-height: 48px;
-  border: 2px solid lightgray;
+  /* line-height: 48px; */
+  border-color: #b497ed;
 }
 
 .sample-songs::-webkit-scrollbar-track{
@@ -159,7 +167,7 @@ body {
   width: 12px;
   border-radius: 10px;
   border: 1px solid #d3d3d3;
-  background-color: lightgray;
+  background-color: #d4ead0;
 }
 
 .sample-songs::-webkit-scrollbar-thumb{

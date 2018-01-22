@@ -179,7 +179,7 @@ class MusicPlayer {
     }
 
     this.audio.volume = 0.5;
-    this.currentTrack = 1;
+    this.currentTrack = 2;
 
 
     this.analyser = this.ctx.createAnalyser();
@@ -332,6 +332,9 @@ class MusicPlayer {
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
+        // $(".play-button").empty();
+        //
+        // ))
         $(".play-button img").attr("src", "images/pause.svg");
         break;
     }
@@ -639,7 +642,7 @@ class SoundBarsContainer {
 
   updateSoundBars(freqArray) {
     for (let i = ADD_BARS_F; i < this.barCount - ADD_BARS_B; i++){
-      let val = freqArray[i - ADD_BARS_F]/2;
+      let val = freqArray[i - ADD_BARS_F]/1.5;
       this.soundBars[i].forEach((bar, ind) => {
         if (ind === 6){
           bar.setHeight(val/2);

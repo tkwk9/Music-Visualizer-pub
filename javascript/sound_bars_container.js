@@ -81,7 +81,7 @@ class SoundBarsContainer {
 
   updateSoundBars(freqArray) {
     for (let i = ADD_BARS_F; i < this.barCount - ADD_BARS_B; i++){
-      let val = freqArray[i - ADD_BARS_F]/2;
+      let val = freqArray[i - ADD_BARS_F]/1.5;
       this.soundBars[i].forEach((bar, ind) => {
         if (ind === 6){
           bar.setHeight(val/2);
