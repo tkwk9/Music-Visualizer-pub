@@ -173,7 +173,9 @@ class MusicPlayer {
     this.audio = $(".audio-source")[0];
     this.ctx = new (AudioContext || window.webkitAudioContext)();
 
-    this.audio.volume = 0.1;
+    this.audio.volume = 0.5;
+    this.currentTrack = 1;
+
 
     this.analyser = this.ctx.createAnalyser();
     this.analyser.fftSize = 2048;
@@ -301,6 +303,16 @@ class MusicPlayer {
     $(".sample.10").click(this.switchSongs(10));
     $(".sample.11").click(this.switchSongs(11));
     $(".sample.12").click(this.switchSongs(12));
+    $(".audio-source").on("ended", () => {
+      this.moveSong('forward');
+    });
+    $(".ff-button").click(() => {
+      this.moveSong('forward');
+    });
+    $(".rewind-button").click(() => {
+      this.moveSong('backward');
+    });
+
     $(".slider").change(e => (this.audio.volume = e.target.value/100));
     document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
   }
@@ -310,30 +322,47 @@ class MusicPlayer {
       case 'play':
         this.mode = this.flippedMode[this.mode];
         this.audio.pause();
-        $(".play-button img").attr("src", "images/circular-play-button.svg");
+        $(".play-button img").attr("src", "images/play-button.svg");
         break;
       case 'paused':
         this.mode = this.flippedMode[this.mode];
         this.audio.play();
-        $(".play-button img").attr("src", "images/circular-pause-button.svg");
+        $(".play-button img").attr("src", "images/pause.svg");
+        break;
+    }
+  }
+
+  moveSong(mode) {
+    switch(mode) {
+      case "forward":
+      console.log(mode);
+        if (this.currentTrack === 12){
+          this.switchSongs(1)();
+        } else {
+          this.switchSongs(this.currentTrack + 1)();
+        }
+        break;
+      case "backward":
+        if (this.currentTrack === 1){
+          this.switchSongs(12)();
+        } else {
+          this.switchSongs(this.currentTrack - 1)();
+        }
         break;
     }
   }
 
   switchSongs(songId) {
     return () => {
-      if (isNaN(songId)){
-
+      $(".playing").removeClass("playing");
+      $(`.sample.${songId}`).addClass("playing");
+      this.currentTrack = songId;
+      if (this.mode === 'play'){
+        this.audio.pause();
+        $(".audio-source").attr('src', this.samples[songId - 1]);
+        this.audio.play();
       } else {
-        if (this.mode === 'play'){
-          this.mode = this.flippedMode[this.mode];
-          this.audio.pause();
-          $(".play-button img").attr("src", "images/circular-play-button.svg");
-          $(".audio-source").attr('src', this.samples[songId - 1]);
-          this.audio.play();
-        } else {
-          $(".audio-source").attr('src', this.samples[songId - 1]);
-        }
+        $(".audio-source").attr('src', this.samples[songId - 1]);
       }
     };
   }
