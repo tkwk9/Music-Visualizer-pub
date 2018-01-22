@@ -36,10 +36,10 @@ body {
   flex-direction: row;
   overflow: hidden;
   border-radius: 15px;
-box-shadow: 10px 10px 8px #111111;
+  position: relative;
+  box-shadow: 10px 10px 8px #111111;
   /* box-shadow: 5px 5px #d4ead0, 10px 10px #b497ed; */
   /* margin-bottom: 200px; */
-  position: relative;
 }
 
 .music-player {
