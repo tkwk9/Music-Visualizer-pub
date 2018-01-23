@@ -75,19 +75,18 @@ class MusicPlayer {
       dragend: () => {
       },
       drop: (e)=> {
+        console.log = () => {};
         let reader = new FileReader();
         // let fileTest;
         reader.onload = evt => {
           if (evt.target.result.slice(0,14) === "data:audio/mp3") {
-            this.audiocrossOrigin = "anonymous";
-            // $(".audio-source").attr("cross-origin", "anonymous");
+            this.audio.crossOrigin = "anonymous";
             $(".audio-source").attr('src', evt.target.result);
           } else {
             // TODO: show error
           }
         };
         reader.readAsDataURL(e.originalEvent.dataTransfer.files[0]);
-        let x = 1;
       }
     });
   }
