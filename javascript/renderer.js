@@ -22,7 +22,7 @@ class Renderer {
 
     this.bluriness = 2;
 
-    this.cameraPosition = [-23.42959864476863, 44.0308677857665, -80.80610975224909];
+    this.cameraPosition = [-94.9327708414404, 132.05963203985476, 144.59501550173889];
 
     this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -37,7 +37,7 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
+      new THREE.PerspectiveCamera(20, WIDTH/HEIGHT, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
 
@@ -46,11 +46,10 @@ class Renderer {
     this.mainControl.autoRotate = true;
     this.mainControl.enablePan = false;
     this.mainControl.enableKeys = false;
-    this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
+      new THREE.PerspectiveCamera(20, WIDTH/HEIGHT, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
 
     this.glowControl = new THREE.OrbitControls(this.glowCamera, $("#canvas")[0]);
@@ -58,8 +57,6 @@ class Renderer {
     this.glowControl.autoRotate = true;
     this.glowControl.enablePan = false;
     this.glowControl.enableKeys = false;
-    // this.glowControl.domElement($("#canvas")[0]);
-    this.glowControl.update();
 
     // Lights
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -120,12 +117,15 @@ class Renderer {
     blendShaderPass.renderToScreen = true;
 
     this.mainComposer.addPass(blendShaderPass);
+
   }
 
   setupSoundBars(barCount) {
     this.soundBarsContainer = new SoundBarsContainer();
     this.soundBarsContainer.createSoundBars(this.mainScene, this.glowScene, barCount);
     this.setCenter();
+    this.mainControl.update();
+    this.glowControl.update();
   }
 
   setCenter() {
