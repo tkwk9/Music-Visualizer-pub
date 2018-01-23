@@ -22,6 +22,7 @@ body {
   /* flex-wrap: wrap; */
   /* background: black; */
   background: #161616;
+  background-image: url('../images/skulls.svg');
 }
 
 
@@ -38,7 +39,8 @@ body {
   overflow: hidden;
   border-radius: 15px;
   position: relative;
-  box-shadow: 10px 10px 8px #111111;
+  box-shadow: 10px 10px 8px rgba(17, 17, 17, 0.85);
+
   /* box-shadow: 5px 5px #d4ead0, 10px 10px #b497ed; */
   /* margin-bottom: 200px; */
 }
@@ -142,7 +144,7 @@ body {
 .play-button svg path{
   transition: fill 0.2s linear;
   fill: #d4ead0;
-  
+
 }
 .play-button svg{
   visibility: visible;
