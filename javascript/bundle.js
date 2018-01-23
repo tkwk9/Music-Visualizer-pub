@@ -179,7 +179,7 @@ class MusicPlayer {
     }
 
     this.audio.volume = 0.5;
-    this.currentTrack = 3;
+    this.currentTrack = 4;
 
 
     this.analyser = this.ctx.createAnalyser();
@@ -196,9 +196,9 @@ class MusicPlayer {
 
     this.samples = [
       "sample_music/Afrojack_Steve_Aoki_No_Beef_Clip.mp3",
-      "sample_music/GD_Crayon.mp3",
-      "sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3",
+      "sample_music/e.mp3",
       "sample_music/GD_TOP_Knock_Out_Inst.mp3",
+      "sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3",
       "sample_music/ODESZA_-_Say_My_Name.mp3",
       "sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix.mp3",
       "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix.mp3",
