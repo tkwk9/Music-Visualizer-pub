@@ -118,6 +118,7 @@ body {
 }
 .ff-button svg path, .rewind-button  svg path{
   transition: all 0.2s linear;
+  fill: #d4ead0;
 }
 
 .ff-button img, .rewind-button img{
@@ -140,6 +141,8 @@ body {
 }
 .play-button svg path{
   transition: fill 0.2s linear;
+  fill: #d4ead0;
+  
 }
 .play-button svg{
   visibility: visible;
