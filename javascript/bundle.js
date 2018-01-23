@@ -179,7 +179,7 @@ class MusicPlayer {
     }
 
     this.audio.volume = 0.5;
-    this.currentTrack = 2;
+    this.currentTrack = 3;
 
 
     this.analyser = this.ctx.createAnalyser();
@@ -196,11 +196,13 @@ class MusicPlayer {
 
     this.samples = [
       "sample_music/Afrojack_Steve_Aoki_No_Beef_Clip.mp3",
+      "sample_music/GD_Crayon.mp3",
       "sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3",
+      "sample_music/GD_TOP_Knock_Out_Inst.mp3",
       "sample_music/ODESZA_-_Say_My_Name.mp3",
       "sample_music/Oh_Wonder_-_Body_Gold_Louis_The_Child_Remix.mp3",
       "sample_music/Ed_Sheeran_-_I_See_Fire_Kygo_Remix.mp3",
-      "sample_music/Post_Malone_-_I_Fall_Apart.mp3",
+      "sample_music/Daft_Punk_-_Something_About_Us.mp3",
       "sample_music/Daft_Punk_-_Harder_Better_Faster_Stronger.mp3",
       "sample_music/Imagine_Dragons_-_Thunder_Audio.mp3",
       "sample_music/Bruno_Mars_-_Finesse_Remix_Feat_Cardi_B.mp3",
@@ -283,11 +285,18 @@ class MusicPlayer {
 
   processFreqArray() {
     this.analyser.getFloatFrequencyData(this.freqArray);
+
     let tempArray = [];
 
     for (let i = this.start; i<this.barCount + this.start ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      let curveIntensity = (this.barCount + this.start - 1 - i) * (3/(this.barCount + this.start - 1)) + 1;
+      // let curveIntensity = (this.barCount + this.start - 1 - i) * (3/(this.barCount + this.start - 1)) + 1;
+      // let curveIntensity = (Math.pow(this.barCount + this.start - i, 5)/Math.pow(this.barCount, 4)) + 2;
+      // let curveIntensity = (Math.pow(i, 4)/Math.pow(2, 20)) + 2;
+      // debugger
+      // console.log(curveIntensity);
+      // let curveIntensity = 3;
+      let curveIntensity = i*(-1/32) + 4;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
     }
@@ -309,6 +318,8 @@ class MusicPlayer {
     $(".sample.10").click(this.switchSongs(10));
     $(".sample.11").click(this.switchSongs(11));
     $(".sample.12").click(this.switchSongs(12));
+    $(".sample.13").click(this.switchSongs(13));
+    $(".sample.14").click(this.switchSongs(14));
     $(".audio-source").on("ended", () => {
       this.moveSong('forward');
     });
@@ -344,7 +355,7 @@ class MusicPlayer {
     switch(mode) {
       case "forward":
       console.log(mode);
-        if (this.currentTrack === 12){
+        if (this.currentTrack === 14){
           this.switchSongs(1)();
         } else {
           this.switchSongs(this.currentTrack + 1)();
@@ -352,7 +363,7 @@ class MusicPlayer {
         break;
       case "backward":
         if (this.currentTrack === 1){
-          this.switchSongs(12)();
+          this.switchSongs(14)();
         } else {
           this.switchSongs(this.currentTrack - 1)();
         }
@@ -423,7 +434,7 @@ class Renderer {
 
     this.bluriness = 2;
 
-    this.cameraPosition = [-23.42959864476863, 44.0308677857665, -80.80610975224909];
+    this.cameraPosition = [-94.9327708414404, 132.05963203985476, 144.59501550173889];
 
     this.renderer.setClearColor( 0x000000, 0 );
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -438,7 +449,7 @@ class Renderer {
 
     // Camera Setup
     this.mainCamera =
-      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
+      new THREE.PerspectiveCamera(20, WIDTH/HEIGHT, 0.1, 3000);
     window.cam = this.mainCamera;
     this.mainCamera.position.set(...this.cameraPosition);
 
@@ -447,11 +458,10 @@ class Renderer {
     this.mainControl.autoRotate = true;
     this.mainControl.enablePan = false;
     this.mainControl.enableKeys = false;
-    this.mainControl.update();
 
 
     this.glowCamera =
-      new THREE.PerspectiveCamera(40, WIDTH/HEIGHT, 0.1, 3000);
+      new THREE.PerspectiveCamera(20, WIDTH/HEIGHT, 0.1, 3000);
     this.glowCamera.position.set(...this.cameraPosition);
 
     this.glowControl = new THREE.OrbitControls(this.glowCamera, $("#canvas")[0]);
@@ -459,8 +469,6 @@ class Renderer {
     this.glowControl.autoRotate = true;
     this.glowControl.enablePan = false;
     this.glowControl.enableKeys = false;
-    // this.glowControl.domElement($("#canvas")[0]);
-    this.glowControl.update();
 
     // Lights
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
@@ -521,12 +529,15 @@ class Renderer {
     blendShaderPass.renderToScreen = true;
 
     this.mainComposer.addPass(blendShaderPass);
+
   }
 
   setupSoundBars(barCount) {
     this.soundBarsContainer = new __WEBPACK_IMPORTED_MODULE_0__sound_bars_container__["a" /* default */]();
     this.soundBarsContainer.createSoundBars(this.mainScene, this.glowScene, barCount);
     this.setCenter();
+    this.mainControl.update();
+    this.glowControl.update();
   }
 
   setCenter() {
