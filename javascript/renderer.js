@@ -20,7 +20,28 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 2;
+
+    // TEMP: remove later
+    window.setLight = (int) => {
+      this.glowAmbLight.intensity = int;
+    };
+    window.mainOpacity = (int) => {
+      this.soundBarsContainer.soundBars.forEach(set => {
+        set.forEach(bar => {
+          bar.material.opacity = int;
+        });
+      });
+      this.glowAmbLight.intensity = int;
+    };
+
+    window.rotation = (bool) => {
+      this.glowControl.autoRotate = bool;
+      this.mainControl.autoRotate = bool;
+    }
+
+
+
+    this.bluriness = 3;
 
     this.cameraPosition = [-94.9327708414404, 132.05963203985476, 144.59501550173889];
 
@@ -59,21 +80,21 @@ class Renderer {
     this.glowControl.enableKeys = false;
 
     // Lights
-    this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.ambLight = new THREE.AmbientLight(0xffffff, 0.3);
     this.mainScene.add(this.ambLight);
 
-    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.pointLight.position.set(4,6,2);
     this.dirLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.dirLight.position.set(-4,6,-2);
     this.mainScene.add(this.dirLight);
     this.mainScene.add(this.pointLight);
 
-    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1);
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1.75);
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
-    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0);
     this.glowPointLight.position.set(4,6,2);
     this.glowScene.add(this.glowPointLight);
 
@@ -117,7 +138,8 @@ class Renderer {
     blendShaderPass.renderToScreen = true;
 
     this.mainComposer.addPass(blendShaderPass);
-
+    window.rotation(false);
+    
   }
 
   setupSoundBars(barCount) {

@@ -12,6 +12,8 @@ class SoundBar {
 
     this.material = new THREE.MeshLambertMaterial({
       color: settings.color,
+      transparent: true,
+      opacity: 1,
       emissive: settings.emissive,
       emissiveIntensity: settings.emissiveIntensity,
     });
@@ -20,10 +22,17 @@ class SoundBar {
     this.x = this.mesh.position.x;
     scene.add(this.mesh);
 
-    this.glowMaterial = new THREE.MeshBasicMaterial({
+    // this.glowMaterial = new THREE.MeshBasicMaterial({
+    //   color: settings.glowColor,
+    //   transparent:true,
+    //   opacity: settings.glowOpacity
+    // });
+    this.glowMaterial = new THREE.MeshLambertMaterial({
       color: settings.glowColor,
-      transparent:true,
-      opacity: settings.glowOpacity
+      transparent: true,
+      opacity: 1,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.2,
     });
 
 
@@ -39,6 +48,7 @@ class SoundBar {
     let modHeight = Math.max(0, this.height);
     let color = pickHex(this.highColor, this.lowColor, modHeight/15);
     this.glowMaterial.color.set(color);
+    this.glowMaterial.emissive.set(color);
     this.mesh.position.y = modHeight;
     this.glowMesh.position.y = this.mesh.position.y;
   }

@@ -189,6 +189,8 @@ class MusicPlayer {
 
     this.audioSrc.connect(this.analyser);
     this.audioSrc.connect(this.ctx.destination);
+    window.audioSrc = this.audioSrc;
+    window.dest = this.ctx.destination;
 
     this.barCount = 64;
     this.start = 0;
@@ -260,7 +262,7 @@ class MusicPlayer {
   }
 
   fetchHiddenName(){
-    if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+    if (typeof document.hidden !== "undefined") {
       this.hidden = "hidden";
       this.visibilityChange = "visibilitychange";
     } else if (typeof document.msHidden !== "undefined") {
@@ -289,12 +291,6 @@ class MusicPlayer {
 
     for (let i = this.start; i<this.barCount + this.start ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      // let curveIntensity = (this.barCount + this.start - 1 - i) * (3/(this.barCount + this.start - 1)) + 1;
-      // let curveIntensity = (Math.pow(this.barCount + this.start - i, 5)/Math.pow(this.barCount, 4)) + 2;
-      // let curveIntensity = (Math.pow(i, 4)/Math.pow(2, 20)) + 2;
-      // debugger
-      // console.log(curveIntensity);
-      // let curveIntensity = 3;
       let curveIntensity = i*(-1/32) + 4;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
@@ -386,13 +382,13 @@ class MusicPlayer {
   }
 
   handleVisibilityChange(){
-    if (this.mode === 'play'){
-      if(document[this.hidden]){
-        clearTimeout(this.timeoutId);
-      } else {
-        this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-      }
+    if(document[this.hidden]){
+      clearTimeout(this.timeoutId);
+    } else {
+      this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
     }
+    // if (this.mode === 'play'){
+    // }
   }
 }
 
@@ -431,7 +427,28 @@ class Renderer {
       antialias: true
     });
 
-    this.bluriness = 2;
+
+    // TEMP: remove later
+    window.setLight = (int) => {
+      this.glowAmbLight.intensity = int;
+    };
+    window.mainOpacity = (int) => {
+      this.soundBarsContainer.soundBars.forEach(set => {
+        set.forEach(bar => {
+          bar.material.opacity = int;
+        });
+      });
+      this.glowAmbLight.intensity = int;
+    };
+
+    window.rotation = (bool) => {
+      this.glowControl.autoRotate = bool;
+      this.mainControl.autoRotate = bool;
+    }
+
+
+
+    this.bluriness = 3;
 
     this.cameraPosition = [-94.9327708414404, 132.05963203985476, 144.59501550173889];
 
@@ -470,21 +487,21 @@ class Renderer {
     this.glowControl.enableKeys = false;
 
     // Lights
-    this.ambLight = new THREE.AmbientLight(0xffffff, 0.5);
+    this.ambLight = new THREE.AmbientLight(0xffffff, 0.3);
     this.mainScene.add(this.ambLight);
 
-    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.75);
+    this.pointLight = new THREE.DirectionalLight(0xffffff, 0.5);
     this.pointLight.position.set(4,6,2);
     this.dirLight = new THREE.DirectionalLight(0xffffff, 0.75);
     this.dirLight.position.set(-4,6,-2);
     this.mainScene.add(this.dirLight);
     this.mainScene.add(this.pointLight);
 
-    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1);
+    this.glowAmbLight = new THREE.AmbientLight(0xffffff, 1.75);
     this.glowScene.add(this.glowAmbLight);
 
     //GLOW
-    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 1);
+    this.glowPointLight = new THREE.DirectionalLight(0xffffff, 0);
     this.glowPointLight.position.set(4,6,2);
     this.glowScene.add(this.glowPointLight);
 
@@ -528,7 +545,8 @@ class Renderer {
     blendShaderPass.renderToScreen = true;
 
     this.mainComposer.addPass(blendShaderPass);
-
+    window.rotation(false);
+    
   }
 
   setupSoundBars(barCount) {
@@ -590,8 +608,9 @@ class SoundBarsContainer {
         pos: [i + (i * 0.5), 0, 0],
         scale: [1,1,1],
         color: 0x636363,
+        // color: 0xffffff,
         emissive: 0x25c4a7,
-        emissiveIntensity: 0.1,
+        emissiveIntensity: 0,
         glowColor: 0x009933,
         glowOpacity: 1,
         highColor: [209, 2, 171],
@@ -757,6 +776,8 @@ class SoundBar {
 
     this.material = new THREE.MeshLambertMaterial({
       color: settings.color,
+      transparent: true,
+      opacity: 1,
       emissive: settings.emissive,
       emissiveIntensity: settings.emissiveIntensity,
     });
@@ -765,10 +786,17 @@ class SoundBar {
     this.x = this.mesh.position.x;
     scene.add(this.mesh);
 
-    this.glowMaterial = new THREE.MeshBasicMaterial({
+    // this.glowMaterial = new THREE.MeshBasicMaterial({
+    //   color: settings.glowColor,
+    //   transparent:true,
+    //   opacity: settings.glowOpacity
+    // });
+    this.glowMaterial = new THREE.MeshLambertMaterial({
       color: settings.glowColor,
-      transparent:true,
-      opacity: settings.glowOpacity
+      transparent: true,
+      opacity: 1,
+      emissive: 0xffffff,
+      emissiveIntensity: 0.2,
     });
 
 
@@ -784,6 +812,7 @@ class SoundBar {
     let modHeight = Math.max(0, this.height);
     let color = Object(__WEBPACK_IMPORTED_MODULE_0__util__["a" /* pickHex */])(this.highColor, this.lowColor, modHeight/15);
     this.glowMaterial.color.set(color);
+    this.glowMaterial.emissive.set(color);
     this.mesh.position.y = modHeight;
     this.glowMesh.position.y = this.mesh.position.y;
   }

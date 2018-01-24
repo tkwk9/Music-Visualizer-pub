@@ -21,6 +21,8 @@ class MusicPlayer {
 
     this.audioSrc.connect(this.analyser);
     this.audioSrc.connect(this.ctx.destination);
+    window.audioSrc = this.audioSrc;
+    window.dest = this.ctx.destination;
 
     this.barCount = 64;
     this.start = 0;
@@ -92,7 +94,7 @@ class MusicPlayer {
   }
 
   fetchHiddenName(){
-    if (typeof document.hidden !== "undefined") { // Opera 12.10 and Firefox 18 and later support
+    if (typeof document.hidden !== "undefined") {
       this.hidden = "hidden";
       this.visibilityChange = "visibilitychange";
     } else if (typeof document.msHidden !== "undefined") {
@@ -121,12 +123,6 @@ class MusicPlayer {
 
     for (let i = this.start; i<this.barCount + this.start ; i++) {
       let val = Math.max(this.freqArray[i] + 140, 0);
-      // let curveIntensity = (this.barCount + this.start - 1 - i) * (3/(this.barCount + this.start - 1)) + 1;
-      // let curveIntensity = (Math.pow(this.barCount + this.start - i, 5)/Math.pow(this.barCount, 4)) + 2;
-      // let curveIntensity = (Math.pow(i, 4)/Math.pow(2, 20)) + 2;
-      // debugger
-      // console.log(curveIntensity);
-      // let curveIntensity = 3;
       let curveIntensity = i*(-1/32) + 4;
       val = Math.pow(val, curveIntensity + 1)/Math.pow(140, curveIntensity);
       tempArray.push(val);
@@ -218,13 +214,13 @@ class MusicPlayer {
   }
 
   handleVisibilityChange(){
-    if (this.mode === 'play'){
-      if(document[this.hidden]){
-        clearTimeout(this.timeoutId);
-      } else {
-        this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
-      }
+    if(document[this.hidden]){
+      clearTimeout(this.timeoutId);
+    } else {
+      this.timeoutId = setTimeout(this.renderLoop.bind(this), 16);
     }
+    // if (this.mode === 'play'){
+    // }
   }
 }
 
