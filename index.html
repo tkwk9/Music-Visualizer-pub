@@ -15,7 +15,6 @@
     <div class="content-holder">
       <div class="music-player">
         <audio class="audio-source" crossorigin="anonymous" src="sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3" autoplay></audio>
-        <!-- <audio class="audio-source" crossorigin="anonymous" src="sample_music/Breakers_Break_Daft_Punk_Mash_Up.mp3" autoplay></audio> -->
         <div class="controls">
           <div class="buttons">
             <div class="rewind-button">
@@ -127,14 +126,27 @@
         </div>
       </div>
       <canvas id='canvas'></canvas>
+      <div class="top-left-directions">
+        <div class="slidecontainer">
+          <div class="">
+            Glow intensity
+          </div>
+          <input type="range" min="0" max="400" value="200" class="glow-slider" id="myRange">
+
+
+        </div>
+      </div>
       <div class="direction">
+        <div class="rotation-button off">
+          auto-rotation: off
+        </div>
         <div class="">
           Click and drag to rotate
         </div>
         <div class="">
           Scroll to zoom
         </div>
-      </div>''
+      </div>
     </div>
     <div action='/response.html' class='dropzone' id="dropzone">
     </div>

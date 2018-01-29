@@ -13,7 +13,7 @@ class SoundBar {
     this.material = new THREE.MeshLambertMaterial({
       color: settings.color,
       transparent: true,
-      opacity: 1,
+      opacity: 0.8,
       emissive: settings.emissive,
       emissiveIntensity: settings.emissiveIntensity,
     });
@@ -32,7 +32,7 @@ class SoundBar {
       transparent: true,
       opacity: 1,
       emissive: 0xffffff,
-      emissiveIntensity: 0.2,
+      emissiveIntensity: 0,
     });
 
 

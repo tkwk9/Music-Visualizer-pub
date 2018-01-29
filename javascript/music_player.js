@@ -159,6 +159,28 @@ class MusicPlayer {
 
     $(".slider").change(e => (this.audio.volume = e.target.value/100));
     document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
+
+    $(".glow-slider").change(e => (this.renderer.glowAmbLight.intensity = e.target.value/100));
+    $(".rotation-button").click(e => {
+      if (this.renderer.glowControl.autoRotate) {
+        $(".rotation-button").removeClass("on");
+        $(".rotation-button").addClass("off");
+        $(".rotation-button").html("auto-rotation: off");
+
+        this.renderer.glowControl.autoRotate = false;
+        this.renderer.mainControl.autoRotate = false;
+      } else {
+        $(".rotation-button").removeClass("off");
+        $(".rotation-button").addClass("on");
+        $(".rotation-button").html("auto-rotation: on");
+        this.renderer.glowControl.autoRotate = true;
+        this.renderer.mainControl.autoRotate = true;
+
+      }
+    });
+    // window.setLight = (int) => {
+    //   this.glowAmbLight.intensity = int;
+    // };
   }
 
   togglePlay() {
