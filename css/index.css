@@ -3,8 +3,28 @@ h1 {
   color: #d4ead0;
   font-size: 50px;
   text-align: center;
-  margin-bottom: 50px ;
+  margin-bottom: 10px ;
   margin-top: 50px ;
+}
+
+.created-by {
+  color: #d4ead0;
+  font-size: 24px;
+  text-align: center;
+  margin-bottom: 20px ;
+  margin-top: 10px ;
+  display: flex;
+  align-items: center;
+}
+.created-by a{
+  margin-left: 10px;
+}
+.created-by path{
+  fill: #d5ead1;
+  transition: fill 0.1s linear;
+}
+.created-by a:hover path{
+  fill: #b497ed;
 }
 
 body {
