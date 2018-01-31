@@ -501,6 +501,7 @@ class Renderer {
     this.mainControl.autoRotate = true;
     this.mainControl.enablePan = false;
     this.mainControl.enableKeys = false;
+    this.mainControl.maxDistance = 1000;
 
 
     this.glowCamera =
@@ -512,6 +513,7 @@ class Renderer {
     this.glowControl.autoRotate = true;
     this.glowControl.enablePan = false;
     this.glowControl.enableKeys = false;
+    this.glowControl.maxDistance = 1000;
 
     // Lights
     this.ambLight = new THREE.AmbientLight(0xffffff, 0.25);
