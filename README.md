@@ -1,3 +1,3 @@
 # Music Visualizer
 
-Music Visualizer utilizes Web Audio API to analyze audio and THREE.js and the output in 3D.
+Music Visualizer utilizes Web Audio API to analyze audio and THREE.js to render the frequency data in 3D.
