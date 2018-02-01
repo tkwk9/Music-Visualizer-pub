@@ -326,9 +326,11 @@ class MusicPlayer {
     });
 
     $(".slider").change(e => (this.audio.volume = e.target.value/100));
+    $(".slider").on("input", e => (this.audio.volume = e.target.value/100));
     document.addEventListener(this.visibilityChange, this.handleVisibilityChange.bind(this), false);
 
-    $(".glow-slider").change(e => (this.renderer.glowAmbLight.intensity = e.target.value/100));
+    // $(".glow-slider").change(e => (this.renderer.glowAmbLight.intensity = e.target.value/100));
+    $(".glow-slider").on("input", e => (this.renderer.glowAmbLight.intensity = e.target.value/100));
     $(".rotation-button").click(e => {
       if (this.renderer.glowControl.autoRotate) {
         $(".rotation-button").removeClass("on");
